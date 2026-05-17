@@ -1,4 +1,4 @@
-package com.ColegioWeb.demo;
+package com.ColegioWeb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
