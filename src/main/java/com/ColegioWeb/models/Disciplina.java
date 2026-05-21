@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.io.Serializable;
 
 @Getter @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
-public class Usuario implements Serializable {
+public class Disciplina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +17,14 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
     @Column(nullable = false)
-    private String senha;
+    private Integer cargaHoraria; // Ex de "carga horária"
 
-    @Column(nullable = false)
-    private String tipoUsuario; // EX: ADMIN, PROFESSOR, ALUNO
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+
+    @ManyToOne
+    @JoinColumn(name = "turma_id")
+    private Turma turma; // Vinculado a Turma
 }

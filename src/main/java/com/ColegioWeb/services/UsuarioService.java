@@ -12,8 +12,14 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
     public Usuario salvar(Usuario usuario) {
-        // Regras de negócio vem aqui
+        // Encripta a senha antes de salvar para garantir a conformidade com LGPD
+        if (usuario.getSenha() != null && !usuario.getSenha().startsWith("$2a$")) {
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
         return repository.save(usuario);
     }
 
