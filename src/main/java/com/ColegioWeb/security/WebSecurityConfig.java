@@ -15,7 +15,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                //.csrf(csrf -> csrf.disable()) // Desabilita CSRF temporariamente para facilitar testes no Postman
+                .csrf(csrf -> csrf.disable()) // Desabilita CSRF temporariamente para facilitar testes no Postman
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/css/**", "/js/**", "/api/teste/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
