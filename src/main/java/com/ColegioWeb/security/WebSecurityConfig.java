@@ -16,7 +16,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/cadastro", "/sobre", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login", "/cadastro", "/sobre", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/aluno/**").hasRole("ALUNO")
@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Encriptação de senha sólida (BCrypt)
+        // Encriptação de senha sólida (BCrypt) protegendo contra vazamentos (LGPD)
         return new BCryptPasswordEncoder();
     }
 }

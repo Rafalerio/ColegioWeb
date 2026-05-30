@@ -25,6 +25,21 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private String senha;
 
+    @Column(unique = true)
+    private String cpf;
+
+    @Column(unique = true)
+    private String rg;
+
+    private String dataNascimento;
+
+    private String telefone;
+
+    private String endereco;
+
     @Column(nullable = false)
-    private String tipoUsuario; // EX: ADMIN, PROFESSOR, ALUNO
+    private String tipoUsuario; // EX: ADMIN, PROFESSOR, ALUNO, RESPONSAVEL
+
+    @Column(nullable = false)
+    private boolean ativo = true; // Status do usuário (Ativo/Inativo)
 }
