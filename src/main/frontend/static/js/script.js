@@ -1,6 +1,3 @@
-// Verificação de conexão com o frontend
-console.log("Frontend connected and script loaded!");
-
 // Carrossel
 const slides = document.getElementById("slides")
 
@@ -141,3 +138,45 @@ cpfRgInputs.forEach(input => {
         e.target.value = e.target.value.replace(/\D/g, "");
     });
 });
+
+// Envio do formulário de matrícula
+const formMatricula = document.getElementById("formMatricula");
+
+if (formMatricula) {
+    formMatricula.addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(formMatricula);
+        const data = Object.fromEntries(formData.entries());
+
+        const erroDiv = document.getElementById("mensagem-erro");
+        const sucessoDiv = document.getElementById("mensagem-sucesso");
+
+        erroDiv.style.display = "none";
+        sucessoDiv.style.display = "none";
+        erroDiv.textContent = "";
+
+        try {
+            const response = await fetch("/api/matricula", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                sucessoDiv.style.display = "block";
+                formMatricula.reset();
+            } else {
+                const errorText = await response.text();
+                erroDiv.textContent = errorText || "Erro ao realizar matrícula.";
+                erroDiv.style.display = "block";
+            }
+        } catch (error) {
+            erroDiv.textContent = "Erro de conexão ao tentar enviar a matrícula.";
+            erroDiv.style.display = "block";
+        }
+    });
+}
+
