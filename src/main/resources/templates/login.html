@@ -11,30 +11,27 @@
 </head>
 <body>
 
-    <main class="login">
-        <section class="left">
-            <img src="/images/school_students.png" alt="Foto de estudantes">
-        </section>
-    
-        <section class="right">
-            <div class="login-box">
-                <h2>Colégio Aprendizagem</h2>
-                <h1>Bem-Vindo!</h1>
+<main class="login">
+    <section class="left">
+        <img src="/images/school_students.png" alt="Foto de estudantes">
+    </section>
 
-                <label>Email</label>
-                <input type="email">
+    <section class="right">
+        <form th:action="@{/login}" method="post" class="login-box">
+            <h2>Colégio Aprendizagem</h2>
+            <h1>Bem-Vindo!</h1>
 
-                <label>Senha</label>
-                <input type="password">
-                <a href="">Esqueceu a senha?</a>
-                <button type="submit">Login</button>
-                <div class="cadastro">
-                    <span>Não tem uma conta?</span>
-                    <a href="/cadastro">Cadastre=se</a>
-                </div>
-            </div> 
-        </section>
-    </main>
-    
+            <label>Email</label>
+            <input type="email" name="username" required> <label>Senha</label>
+            <input type="password" name="password" required> <a href="">Esqueceu a senha?</a>
+            <button type="submit">Login</button>
+            <div class="cadastro">
+                <span>Não tem uma conta?</span>
+                <a href="/cadastro">Cadastre-se</a>
+            </div>
+        </form>
+    </section>
+</main>
+
 </body>
 </html>

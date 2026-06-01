@@ -18,6 +18,16 @@ public class Aluno extends Usuario {
     @JoinColumn(name = "turma_id")
     private Turma turma;
 
+    @ManyToOne
+    @JoinColumn(name = "responsavel_id")
+    private Responsavel responsavel;
+
+    @Column(name = "quantidade_de_faltas")
+    private Integer quantidadeDeFaltas = 0;
+
+    @Column(name = "media_de_desempenho")
+    private Double mediaDeDesempenho = 0.0;
+
     public Aluno() {
         super();
         this.setTipoUsuario("ALUNO");

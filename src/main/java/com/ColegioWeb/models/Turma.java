@@ -28,6 +28,10 @@ public class Turma {
     @Column(nullable = false)
     private Integer anoLetivo; // Ex: 2026 (Ano letivo)
 
+    @Column(nullable = false)
+    private Integer capacidadeMax = 30; // Capacidade máxima de alunos
+
     @OneToMany(mappedBy = "turma")
     private List<Aluno> alunos;
 }
+
