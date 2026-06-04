@@ -53,4 +53,19 @@ public class HomeController {
             return "redirect:/cadastro?erro=true";
         }
     }
+
+    @GetMapping("/aluno/avisos")
+    public String alunoAvisos() { return "aluno/avisos"; }
+
+    @GetMapping("/aluno/calendario")
+    public String alunoCalendario() { return "aluno/calendario"; }
+
+    @GetMapping("/aluno/avaliacoes")
+    public String alunoAvaliacoes() { return "aluno/avaliacoes"; }
+
+    @GetMapping("/aluno/financeiro")
+    public String alunoFinanceiro() { return "aluno/financeiro"; }
+
+    @GetMapping("/aluno/notificacoes")
+    public String alunoNotificacoes() { return "aluno/notificacoes"; }
 }
