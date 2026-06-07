@@ -16,7 +16,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/cadastro", "/sobre", "/aluno/**", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
+                        .requestMatchers("/", "/login", "/cadastro", "/login-professor", "/sobre", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/aluno/**").hasRole("ALUNO")
@@ -24,7 +24,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .defaultSuccessUrl("/aluno/avisos", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

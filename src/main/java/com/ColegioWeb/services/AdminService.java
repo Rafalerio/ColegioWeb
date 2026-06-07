@@ -16,7 +16,6 @@ public class AdminService {
     @Transactional
     public void alterarStatusUsuario(Long adminId, Long usuarioTargetId, boolean status) {
         // Busca o admin que está fazendo a ação (em um sistema real pegariamos via context do spring security)
-        // Aqui simplificando:
         Usuario adminUser = usuarioRepository.findById(adminId)
                 .orElseThrow(() -> new IllegalArgumentException("Administrador não encontrado."));
 

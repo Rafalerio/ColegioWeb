@@ -61,8 +61,6 @@ public class MatriculaService {
             responsavel.setSenha(passwordEncoder.encode(dto.senhaResponsavel()));
             responsavelRepository.save(responsavel);
         } else {
-            // Em tese, atualizaria os dados do responsável se fizesse sentido
-            // Mas vamos usar o já existente
         }
 
         // Criar Aluno

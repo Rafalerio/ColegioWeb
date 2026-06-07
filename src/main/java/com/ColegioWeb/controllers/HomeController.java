@@ -68,4 +68,7 @@ public class HomeController {
 
     @GetMapping("/aluno/notificacoes")
     public String alunoNotificacoes() { return "aluno/notificacoes"; }
+
+    @GetMapping("/login-professor")
+    public String loginProfessor() { return "login-professor"; }
 }
