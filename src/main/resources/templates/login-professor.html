@@ -22,6 +22,16 @@
             <h2>Colégio Aprendizagem</h2>
             <h1>Bem-Vindo!</h1>
 
+            <div th:if="${param.error}" style="background-color: #ffdbdb; color: #cc0000; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; text-align: center; border: 1px solid #ffb3b3;">
+                <span th:if="${param.error.toString() == 'not_professor'}">
+                Acesso negado: Este portal é exclusivo para contas de professores.
+                </span>
+
+                <span th:if="${param.error.toString() != 'not_professor'}">
+                Usuário ou senha incorretos.
+                </span>
+            </div>
+
             <label>Email</label>
             <input type="email" name="username" required> <label>Senha</label>
             <input type="password" name="password" required> <a href="">Esqueceu a senha?</a>

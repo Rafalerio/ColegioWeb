@@ -73,7 +73,7 @@ public class HomeController {
     public String loginProfessor() { return "login-professor"; }
 
     @GetMapping("/professor/avisos")
-    public String professorAvisos() { return "professor/avisos"; }
+    public String professorAvisos() { return "avisos-professor"; }
 
     @GetMapping("/professor/calendario")
     public String professorCalendario() { return "professor/calendario"; }
