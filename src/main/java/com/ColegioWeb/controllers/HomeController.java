@@ -71,4 +71,19 @@ public class HomeController {
 
     @GetMapping("/login-professor")
     public String loginProfessor() { return "login-professor"; }
+
+    @GetMapping("/professor/avisos")
+    public String professorAvisos() { return "professor/avisos"; }
+
+    @GetMapping("/professor/calendario")
+    public String professorCalendario() { return "professor/calendario"; }
+
+    @GetMapping("/professor/avaliacoes")
+    public String professorAvaliacoes() { return "professor/avaliacoes"; }
+
+    @GetMapping("/professor/financeiro")
+    public String professorFinanceiro() { return "professor/financeiro"; }
+
+    @GetMapping("/professor/notificacoes")
+    public String professorNotificacoes() { return "professor/notificacoes"; }
 }
