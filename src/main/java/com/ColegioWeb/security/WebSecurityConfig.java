@@ -16,7 +16,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/cadastro", "/login-professor", "/sobre", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
+                        .requestMatchers("/", "/login", "/cadastro", "/login-funcionario", "/sobre", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/aluno/**").hasAnyRole("ALUNO", "RESPONSAVEL")
@@ -34,21 +34,28 @@ public class WebSecurityConfig {
                             System.out.println("DEBUG [Login Sucesso]: Usuário autenticado com as roles: " + roles);
                             System.out.println("DEBUG [Login Origem]: Veio da página: " + referer);
 
-                            // Se tentou logar pela página de professor
-                            if (referer != null && referer.contains("login-professor")) {
-                                if (!roles.contains("ROLE_PROFESSOR")) {
-                                    System.out.println("DEBUG [Login Bloqueado]: Professor não encontrado");
+                            // Se tentou logar pela página dos funcionarios
+                            if (referer != null && referer.contains("login-funcionario")) {
+                                if (roles.contains("ROLE_PROFESSOR")) {
+                                    response.sendRedirect("/professor/avisos");
+                                    return;
+                                } else if (roles.contains("ROLE_ADMIN")) {
+                                    response.sendRedirect("/admin/avisos");
+                                    return;
+                                } else {
+                                    System.out.println("DEBUG [Login Bloqueado]: Professor/Admin não encontrado");
                                     request.getSession().invalidate();
-                                    response.sendRedirect("/login-professor?error=not_professor");
+                                    response.sendRedirect("/login-funcionario?error=not_funcionario");
                                     return;
                                 }
-                                response.sendRedirect("/professor/avisos");
-                                return;
                             }
 
-                            // Fluxo padrão se logou pela tela comum (Aluno / Responsável)
-                            if (roles.contains("ROLE_PROFESSOR")) {
-                                response.sendRedirect("/professor/avisos");
+                            // Fluxo padrão pela tela de login dos alunos
+                            if (roles.contains("ROLE_PROFESSOR") || roles.contains("ROLE_ADMIN")) {
+                                System.out.println("DEBUG [Login Bloqueado]: Professores e Administradores devem usar o Portal do Servidor");
+                                request.getSession().invalidate();
+                                response.sendRedirect("/login?error=not_student");
+                                return;
                             } else {
                                 response.sendRedirect("/aluno/avisos");
                             }
@@ -59,8 +66,8 @@ public class WebSecurityConfig {
                             String referer = request.getHeader("Referer");
                             System.out.println("DEBUG [Login Falha]: Credenciais incorretas. Erro: " + exception.getMessage());
 
-                            if (referer != null && referer.contains("login-professor")) {
-                                response.sendRedirect("/login-professor?error=true");
+                            if (referer != null && referer.contains("login-funcionario")) {
+                                response.sendRedirect("/login-funcionario?error=true");
                             } else {
                                 response.sendRedirect("/login?error=true");
                             }
@@ -78,7 +85,7 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Encriptação de senha sólida (BCrypt) protegendo contra vazamentos (LGPD)
+        // Encriptação de senha sólida (BCrypt) protegendo contra vazamentos
         return new BCryptPasswordEncoder();
     }
 }

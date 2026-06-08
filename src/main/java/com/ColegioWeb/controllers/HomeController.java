@@ -69,11 +69,11 @@ public class HomeController {
     @GetMapping("/aluno/notificacoes")
     public String alunoNotificacoes() { return "aluno/notificacoes"; }
 
-    @GetMapping("/login-professor")
-    public String loginProfessor() { return "login-professor"; }
+    @GetMapping("/login-funcionario")
+    public String loginFuncionario() { return "login-funcionario"; }
 
     @GetMapping("/professor/avisos")
-    public String professorAvisos() { return "avisos-professor"; }
+    public String professorAvisos() { return "professor/avisos-professor"; }
 
     @GetMapping("/professor/calendario")
     public String professorCalendario() { return "professor/calendario"; }
@@ -86,4 +86,7 @@ public class HomeController {
 
     @GetMapping("/professor/notificacoes")
     public String professorNotificacoes() { return "professor/notificacoes"; }
+
+    @GetMapping("/admin/avisos")
+    public String adminAvisos() { return "admin/avisos-admin"; }
 }

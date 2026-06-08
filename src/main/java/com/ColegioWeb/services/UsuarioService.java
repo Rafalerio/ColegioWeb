@@ -16,7 +16,7 @@ public class UsuarioService {
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     public Usuario salvar(Usuario usuario) {
-        // Encripta a senha antes de salvar para garantir a conformidade com LGPD
+        // Encripta a senha antes de salvar
         if (usuario.getSenha() != null && !usuario.getSenha().startsWith("$2a$")) {
             usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }

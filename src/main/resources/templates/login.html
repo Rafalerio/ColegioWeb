@@ -23,7 +23,13 @@
             <h1>Bem-Vindo!</h1>
 
             <div th:if="${param.error}" style="background-color: #ffdbdb; color: #cc0000; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; text-align: center; border: 1px solid #ffb3b3;">
+                <span th:if="${param.error.toString() == 'not_student'}">
+                Acesso negado: Este portal é exclusivo para alunos e responsáveis.
+                </span>
+
+                <span th:if="${param.error.toString() != 'not_student'}">
                 Usuário ou senha incorretos. Verifique suas credenciais.
+                </span>
             </div>
 
             <label>Email</label>
