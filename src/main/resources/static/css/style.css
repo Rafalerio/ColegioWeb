@@ -50,6 +50,7 @@ header {
     border-top: solid 2px;
     padding: clamp(20px, 5vw, 30px);
     flex-wrap: wrap;
+    border-bottom: solid black 2px;
 }
 
 .header-left {
@@ -86,6 +87,7 @@ footer {
     color: #ffffff;
     padding: 10px 80px;
     font-size: 15px;
+    border-top: solid black 2px;
 }
 
 .carrossel {
@@ -96,7 +98,7 @@ footer {
     background-color: #0000008e;
     justify-content: center;
     align-items: center;
-    border: solid 2px;
+    border-bottom: solid black 2px;
     overflow: hidden;
 }
 
@@ -144,6 +146,11 @@ footer {
     height: 250px;
 }
 
+@media (min-width: 800px) {
+    .extra {
+        height: 600px;
+    }
+}
 /* Chat */
 .chat-button {
     position: fixed;
@@ -347,8 +354,6 @@ footer {
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
-    border-top: 2px solid;
-    border-bottom: 2px solid;
     overflow: hidden;
     min-height: 900px;
 }
@@ -381,6 +386,20 @@ footer {
 
 .sobre p {
     text-align: justify;
+}
+
+.segmentos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 50px;
+}
+
+.segmento-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 768px) {
