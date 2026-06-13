@@ -18,8 +18,8 @@ public class MatriculaController {
     @PostMapping
     public ResponseEntity<String> matricular(@Valid @RequestBody MatriculaRequestDTO dto) {
         try {
-            matriculaService.realizarMatricula(dto);
-            return ResponseEntity.ok("Matrícula realizada com sucesso!");
+            Long id = matriculaService.realizarMatricula(dto);
+            return ResponseEntity.ok("Solicitação criada com sucesso! ID: " + id);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

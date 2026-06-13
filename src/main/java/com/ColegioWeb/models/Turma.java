@@ -1,14 +1,14 @@
 package com.ColegioWeb.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Getter @Setter
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 public class Turma {
 
@@ -31,7 +31,18 @@ public class Turma {
     @Column(nullable = false)
     private Integer capacidadeMax = 30; // Capacidade máxima de alunos
 
+    @Column(nullable = false)
+    private boolean ativo = true;
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "turma")
     private List<Aluno> alunos;
-}
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "turma_disciplina",
+        joinColumns = @JoinColumn(name = "turma_id"),
+        inverseJoinColumns = @JoinColumn(name = "disciplina_id")
+    )
+    private List<Disciplina> disciplinas;
+}

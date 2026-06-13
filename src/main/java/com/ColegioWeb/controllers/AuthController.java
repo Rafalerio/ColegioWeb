@@ -26,7 +26,4 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    // O endpoint de recuperação de senha via API foi movido para o HomeController
-    // para utilizar a renderização e o formulário do Thymeleaf.
 }

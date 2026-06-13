@@ -27,7 +27,11 @@
                 Acesso negado: Este portal é exclusivo para alunos e responsáveis.
                 </span>
 
-                <span th:if="${param.error.toString() != 'not_student'}">
+                <span th:if="${param.error != null and param.error[0] == 'pending'}">
+                Acesso negado: Sua matrícula (ou do aluno vinculado) ainda está em análise pela escola. Aguarde a aprovação para acessar o sistema.
+                </span>
+
+                <span th:if="${param.error != null and param.error[0] != 'not_student' and param.error[0] != 'pending'}">
                 Usuário ou senha incorretos. Verifique suas credenciais.
                 </span>
             </div>

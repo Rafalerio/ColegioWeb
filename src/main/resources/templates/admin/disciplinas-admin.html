@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disciplinas | Portal Admin</title>
+    <link rel="icon" type="image/x-icon" href="/images/school_logo.png">
+    <link rel="stylesheet" href="/css/portal.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body class="sb-expanded">
+<aside th:replace="~{admin/avisos-admin :: aside}"></aside>
+<main>
+    <div class="header">
+        <h1>Gerenciar Disciplinas</h1>
+        <button class="btn-primary" onclick="alert('Funcionalidade de cadastro a implementar em JS')">+ Nova Disciplina</button>
+    </div>
+    <div class="content">
+        <p>Aqui o admin poderá cadastrar, editar, inativar disciplinas (Requisito 07).</p>
+        <table class="table" id="disciplinasTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Carga Horária</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated via JS API Fetch -->
+            </tbody>
+        </table>
+    </div>
+</main>
+<script src="/js/sidebar.js"></script>
+</body>
+</html>

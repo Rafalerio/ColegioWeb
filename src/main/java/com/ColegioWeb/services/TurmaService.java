@@ -6,6 +6,8 @@ import com.ColegioWeb.models.Aluno;
 import com.ColegioWeb.models.Turma;
 import com.ColegioWeb.repositories.AlunoRepository;
 import com.ColegioWeb.repositories.TurmaRepository;
+import com.ColegioWeb.repositories.DisciplinaRepository;
+import com.ColegioWeb.models.Disciplina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +24,21 @@ public class TurmaService {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
+
     public List<TurmaDTO> listarTodas() {
         return turmaRepository.findAll().stream()
-                .map(t -> new TurmaDTO(t.getId(), t.getNome(), t.getSerie(), t.getTurno(), t.getAnoLetivo(), t.getCapacidadeMax()))
+                .map(t -> new TurmaDTO(t.getId(), t.getNome(), t.getSerie(), t.getTurno(), t.getAnoLetivo(), t.getCapacidadeMax(),
+                        t.getDisciplinas() != null ? t.getDisciplinas().stream().map(Disciplina::getId).collect(Collectors.toList()) : null))
                 .collect(Collectors.toList());
     }
 
     public TurmaDTO buscarPorId(Long id) {
         Turma t = turmaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada."));
-        return new TurmaDTO(t.getId(), t.getNome(), t.getSerie(), t.getTurno(), t.getAnoLetivo(), t.getCapacidadeMax());
+        return new TurmaDTO(t.getId(), t.getNome(), t.getSerie(), t.getTurno(), t.getAnoLetivo(), t.getCapacidadeMax(),
+                t.getDisciplinas() != null ? t.getDisciplinas().stream().map(Disciplina::getId).collect(Collectors.toList()) : null);
     }
 
     @Transactional
@@ -44,8 +51,13 @@ public class TurmaService {
         if (dto.capacidadeMax() != null) {
             turma.setCapacidadeMax(dto.capacidadeMax());
         }
+        if (dto.disciplinaIds() != null) {
+            List<Disciplina> disciplinas = disciplinaRepository.findAllById(dto.disciplinaIds());
+            turma.setDisciplinas(disciplinas);
+        }
         turma = turmaRepository.save(turma);
-        return new TurmaDTO(turma.getId(), turma.getNome(), turma.getSerie(), turma.getTurno(), turma.getAnoLetivo(), turma.getCapacidadeMax());
+        return new TurmaDTO(turma.getId(), turma.getNome(), turma.getSerie(), turma.getTurno(), turma.getAnoLetivo(), turma.getCapacidadeMax(), 
+                turma.getDisciplinas() != null ? turma.getDisciplinas().stream().map(Disciplina::getId).collect(Collectors.toList()) : null);
     }
 
     @Transactional
@@ -59,8 +71,13 @@ public class TurmaService {
         if (dto.capacidadeMax() != null) {
             turma.setCapacidadeMax(dto.capacidadeMax());
         }
+        if (dto.disciplinaIds() != null) {
+            List<Disciplina> disciplinas = disciplinaRepository.findAllById(dto.disciplinaIds());
+            turma.setDisciplinas(disciplinas);
+        }
         turma = turmaRepository.save(turma);
-        return new TurmaDTO(turma.getId(), turma.getNome(), turma.getSerie(), turma.getTurno(), turma.getAnoLetivo(), turma.getCapacidadeMax());
+        return new TurmaDTO(turma.getId(), turma.getNome(), turma.getSerie(), turma.getTurno(), turma.getAnoLetivo(), turma.getCapacidadeMax(),
+                turma.getDisciplinas() != null ? turma.getDisciplinas().stream().map(Disciplina::getId).collect(Collectors.toList()) : null);
     }
 
     @Transactional
@@ -68,9 +85,10 @@ public class TurmaService {
         Turma turma = turmaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada."));
         if (turma.getAlunos() != null && !turma.getAlunos().isEmpty()) {
-            throw new IllegalStateException("Não é possível deletar uma turma que possui alunos.");
+            throw new IllegalStateException("Não é possível desativar uma turma que possui alunos. Transfira-os primeiro.");
         }
-        turmaRepository.deleteById(id);
+        turma.setAtivo(false);
+        turmaRepository.save(turma);
     }
 
     @Transactional

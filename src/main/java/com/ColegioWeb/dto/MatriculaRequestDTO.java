@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Pattern;
 
 public record MatriculaRequestDTO(
         // Dados do Aluno
+        @jakarta.validation.constraints.NotNull(message = "O período de matrícula é obrigatório")
+        Long periodoId,
+
         @NotBlank(message = "O nome do aluno é obrigatório")
         String nomeAluno,
 

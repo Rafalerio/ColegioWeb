@@ -2,11 +2,12 @@ package com.ColegioWeb.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Getter @Setter
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 public class Disciplina {
 
@@ -24,7 +25,6 @@ public class Disciplina {
     @JoinColumn(name = "professor_id")
     private Professor professor;
 
-    @ManyToOne
-    @JoinColumn(name = "turma_id")
-    private Turma turma; // Vinculado a Turma
+    @Column(nullable = false)
+    private boolean ativo = true;
 }

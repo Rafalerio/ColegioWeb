@@ -1,7 +1,7 @@
 package com.ColegioWeb.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Avaliacao {
+public class SolicitacaoMatricula {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +21,17 @@ public class Avaliacao {
     private Aluno aluno;
 
     @ManyToOne
-    @JoinColumn(name = "disciplina_id", nullable = false)
-    private Disciplina disciplina;
+    @JoinColumn(name = "turma_id")
+    private Turma turma; // Turma definida após análise
+
+    @ManyToOne
+    @JoinColumn(name = "periodo_id")
+    private PeriodoMatricula periodo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusMatricula status = StatusMatricula.SOLICITADA;
 
     @Column(nullable = false)
-    private Double nota;
-
-    private String observacao;
-
-    @Column(nullable = false)
-    private LocalDate dataAvaliacao;
-
-    @Column(nullable = false)
-    private boolean ativo = true;
+    private LocalDateTime dataSolicitacao;
 }

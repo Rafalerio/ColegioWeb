@@ -9,14 +9,35 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.ColegioWeb.models.Disciplina;
+import com.ColegioWeb.repositories.DisciplinaRepository;
+import java.util.Arrays;
+import java.util.List;
 /*
 @Configuration
 public class DataInitializer{
     //ALERTA IMPORTANTE: Essa classe só deve ser inicializada com a API somente a primeira vez que rodar para injetar as informações no BD
     //Após a primeira inicialização, comente todo o código para não haver erros de inicialização por parte do BD não aceitar as informações duplicadas, ou retire o arquivo da pasta do projeto.
     @Bean
-    public CommandLineRunner initData(UsuarioRepository usuarioRepository, ProfessorRepository professorRepository, AdministradorRepository administradorRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner initData(UsuarioRepository usuarioRepository, ProfessorRepository professorRepository, AdministradorRepository administradorRepository, PasswordEncoder passwordEncoder, DisciplinaRepository disciplinaRepository) {
         return args -> {
+            
+            // Inicializar disciplinas fixas se não existirem
+            List<String> disciplinasFixas = Arrays.asList(
+                    "Lingua Portuguesa", "Matemática", "Historia", "Geografia", "Ciências",
+                    "Lingua Inglesa", "Artes", "Educação Física", "Biologia", "Física",
+                    "Química", "Sociologia", "Filosofia"
+            );
+            
+            for (String nomeDisciplina : disciplinasFixas) {
+                if (disciplinaRepository.findByNome(nomeDisciplina).isEmpty()) {
+                    Disciplina d = new Disciplina();
+                    d.setNome(nomeDisciplina);
+                    d.setCargaHoraria(80); // Carga horária padrão
+                    disciplinaRepository.save(d);
+                }
+            }
+
             if (usuarioRepository.findByCpf("12345678901").isEmpty()) {
                 Professor p1 = new Professor();
                 p1.setNome("Professor Ardido");

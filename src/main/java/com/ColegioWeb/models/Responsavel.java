@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 public class Responsavel extends Usuario {
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "responsavel")
     private List<Aluno> alunos;
 

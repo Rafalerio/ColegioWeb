@@ -17,7 +17,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/login-professor", "/recuperar-senha", "/api/auth/recuperar-senha", "/cadastro", "/sobre", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
+                        .requestMatchers("/", "/login", "/login-funcionario", "/recuperar-senha", "/api/auth/recuperar-senha", "/cadastro", "/comprovante", "/sobre", "/contato", "/segmentos", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
                         .requestMatchers("/aluno/**").hasAnyRole("ALUNO", "RESPONSAVEL")
@@ -65,12 +65,16 @@ public class WebSecurityConfig {
                         // Redireciona a falha para a página correta de origem
                         .failureHandler((request, response, exception) -> {
                             String referer = request.getHeader("Referer");
-                            System.out.println("DEBUG [Login Falha]: Credenciais incorretas. Erro: " + exception.getMessage());
+                            System.out.println("DEBUG [Login Falha]: Credenciais incorretas ou acesso bloqueado. Erro: " + exception.getMessage());
 
                             if (referer != null && referer.contains("login-funcionario")) {
                                 response.sendRedirect("/login-funcionario?error=true");
                             } else {
-                                response.sendRedirect("/login?error=true");
+                                if (exception instanceof org.springframework.security.authentication.DisabledException) {
+                                    response.sendRedirect("/login?error=pending");
+                                } else {
+                                    response.sendRedirect("/login?error=true");
+                                }
                             }
                         })
                         .permitAll()
