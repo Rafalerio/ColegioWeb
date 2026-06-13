@@ -94,6 +94,38 @@ nav a span {
     margin-bottom: 15px;
 }
 
+/* Header */
+.portal-header {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 10px 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    background-color: #f5f5f5;
+    border: 1px solid #acacac;
+    user-select: none;
+}
+
+.usuario {
+    display: flex;
+    gap: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #474747;
+}
+
+.usuario div p {
+    padding: 2px;
+}
+
+.usuario img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 /* Conteúdo da página */
 main {
     margin-left: 5rem;
@@ -246,34 +278,179 @@ main {
 
 }
 
-/* Header */
-.portal-header {
+/* Avisos */
+.avisos {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    gap: 25px;
+}
+
+.estado-vazio {
     display: flex;
-    justify-content: right;
     align-items: center;
-    margin-bottom: 30px;
-    padding: 10px 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.05);
-    background-color: #f5f5f5;
-    border: 1px solid #acacac;
-    user-select: none;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 20px;
 }
 
-.usuario {
+
+.aviso {
     display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 20px;
+    gap: 15px;
+}
+
+.aviso-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 12px;
+}
+
+.aviso-header h2 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.aviso-header div {
+    display: flex;
+    flex-direction: column;
+}
+
+.aviso-header div span {
+    font-size: 0.8rem;
+    color: #515151;
+}
+
+.aviso-header > span {
+    font-size: 0.9rem;
+    color: #515151;
+}
+
+.aviso h3 {
+    color: #20316c;
+    font-size: 1.4rem;
+}
+
+.aviso-conteudo {
+    line-height: 1.6;
+    color: #444;
+    text-align: justify;
+}
+
+@media (max-width: 600px) {
+    .aviso-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Disciplinas */
+.disciplinas {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    gap: 25px;
+}
+
+.disciplina {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 20px;
+    gap: 15px;
+}
+
+.disciplina div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.disciplina-label {
+    color: #515151;
+}
+
+.disciplina-valor {
     font-weight: bold;
-    font-size: 14px;
-    color: #474747;
+    color: #1b2545;
 }
 
-.usuario div p {
-    padding: 2px;
+@media (max-width: 1000px) {
+    .disciplina {
+        flex-direction: column;
+    }
 }
 
-.usuario img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
+/* Calendário */
+.calendario {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.calendario-dia {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.calendario-dia > p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #20316c;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+}
+
+.calendario-disciplina {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    border-left: 5px solid #20316c;
+}
+
+.calendario-disciplina p {
+    font-weight: bold;
+    color: #1b2545;
+    margin-bottom: 5px;
+}
+
+.calendario-disciplina span {
+    color: #667;
+    font-size: 0.9rem;
+}
+
+.calendario-horario {
+    font-weight: bold;
+    color: #20316c;
+}
+
+@media (max-width: 600px) {
+    .calendario-disciplina {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 }
