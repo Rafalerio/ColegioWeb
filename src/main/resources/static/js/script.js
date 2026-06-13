@@ -117,3 +117,6 @@ input.addEventListener("keydown", (e) => {
         enviarMensagem();
     }
 });
+
+// Redefinição de senha
+// A lógica de recuperação de senha foi movida para o backend usando Thymeleaf

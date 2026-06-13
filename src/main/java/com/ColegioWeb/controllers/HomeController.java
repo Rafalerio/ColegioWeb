@@ -8,6 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import com.ColegioWeb.dto.RecuperacaoSenhaDTO;
+import com.ColegioWeb.models.Usuario;
+import com.ColegioWeb.repositories.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -15,6 +23,12 @@ public class HomeController {
 
     @Autowired
     private MatriculaService matriculaService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -29,6 +43,38 @@ public class HomeController {
     @GetMapping("/cadastro")
     public String cadastro() {
         return "cadastro";
+    }
+
+    @GetMapping("/recuperar-senha")
+    public String recuperarSenha(Model model) {
+        model.addAttribute("dto", new RecuperacaoSenhaDTO("", "", ""));
+        return "recuperar-senha";
+    }
+
+    @PostMapping("/recuperar-senha")
+    public String realizarRecuperacaoSenha(@Valid @ModelAttribute("dto") RecuperacaoSenhaDTO dto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "recuperar-senha";
+        }
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(dto.email());
+
+        if (usuarioOpt.isEmpty()) {
+            model.addAttribute("erro", "Usuário não encontrado com os dados fornecidos.");
+            return "recuperar-senha";
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        if (usuario.getCpf() == null || !usuario.getCpf().equals(dto.cpf())) {
+            model.addAttribute("erro", "Os dados fornecidos não conferem.");
+            return "recuperar-senha";
+        }
+
+        usuario.setSenha(passwordEncoder.encode(dto.novaSenha()));
+        usuarioRepository.save(usuario);
+
+        return "redirect:/login?recuperado";
     }
 
     @GetMapping("/sobre")
