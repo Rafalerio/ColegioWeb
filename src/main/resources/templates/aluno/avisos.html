@@ -15,6 +15,19 @@
 
 <body class="sb-expanded">
 
+<header class="portal-header">
+
+    <div class="usuario">
+        <img src="/images/user_logo.png">
+        
+        <div>
+            <p>ELON MUSK DA SILVA</p>
+            <p>3° ANO B</p> <!-- Em vez de ano pode colocar matrícula se achar melhor -->
+        </div>
+    </div>
+
+</header>
+
 <aside>
     <nav>
         <ul>
@@ -42,15 +55,9 @@
                 </a>
             </li>
             <li>
-                <a href="/aluno/financeiro">
-                    <i class="bx bx-money"></i>
-                    <span>Financeiro</span>
-                </a>
-            </li>
-            <li>
-                <a href="/aluno/notificacoes">
-                    <i class="bx bx-bell"></i>
-                    <span>Notificações</span>
+                <a href="/aluno/disciplinas">
+                    <i class="bx bx-book"></i>
+                    <span>Disciplinas</span>
                 </a>
             </li>
             <li class="logout">
@@ -66,6 +73,33 @@
 <main>
     <h3>Avisos</h3>
     <hr>
+
+    <div class="avisos">
+        <div class="estado-vazio"> <!-- Usado quando não tem avisos no momento. Se houver avisos, oculte -->
+            <p >Nenhum aviso disponível no momento.</p>
+        </div>
+
+        <div class="aviso">
+            <div class="aviso-header">
+                <div>
+                    <h2>RODRIGO MATTOS</h2>
+                    <span>Professor</span>
+                </div>
+
+                <span>12/06/2026</span>
+            </div>
+
+            <h3>Dia da prova alterado</h3>
+
+            <div class="aviso-conteudo">
+                <p>
+                    Devido a circunstâncias pessoais, a prova marcada para o dia 13/06 será alterada para o dia 20/06.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
 </main>
 
 <script src="/js/sidebar.js"></script>

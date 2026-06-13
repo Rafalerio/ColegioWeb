@@ -36,6 +36,16 @@ public class HomeController {
         return "sobre";
     }
 
+    @GetMapping("/contato")
+    public String contato() {
+        return "contato";
+    }
+
+    @GetMapping("/segmentos")
+    public String segmentos() {
+        return "segmentos";
+    }
+
     @PostMapping("/cadastro")
     public String realizarCadastro(MatriculaRequestDTO dto) {
         log.info("=========================================");
@@ -63,17 +73,14 @@ public class HomeController {
     @GetMapping("/aluno/avaliacoes")
     public String alunoAvaliacoes() { return "aluno/avaliacoes"; }
 
-    @GetMapping("/aluno/financeiro")
-    public String alunoFinanceiro() { return "aluno/financeiro"; }
+    @GetMapping("/aluno/disciplinas")
+    public String alunoDisciplinas() { return "aluno/disciplinas"; }
 
-    @GetMapping("/aluno/notificacoes")
-    public String alunoNotificacoes() { return "aluno/notificacoes"; }
-
-    @GetMapping("/login-professor")
-    public String loginProfessor() { return "login-professor"; }
+    @GetMapping("/login-funcionario")
+    public String loginFuncionario() { return "login-funcionario"; }
 
     @GetMapping("/professor/avisos")
-    public String professorAvisos() { return "avisos-professor"; }
+    public String professorAvisos() { return "professor/avisos-professor"; }
 
     @GetMapping("/professor/calendario")
     public String professorCalendario() { return "professor/calendario"; }
@@ -86,4 +93,13 @@ public class HomeController {
 
     @GetMapping("/professor/notificacoes")
     public String professorNotificacoes() { return "professor/notificacoes"; }
+
+    @GetMapping("/professor/situacao-aluno")
+    public String professorSituacaoAluno() { return "professor/situacao-aluno"; }
+
+    @GetMapping("/professor/sistema-faltas")
+    public String professorSistemaFaltas() { return "professor/sistema-faltas"; }
+
+    @GetMapping("/admin/avisos")
+    public String adminAvisos() { return "admin/avisos-admin"; }
 }

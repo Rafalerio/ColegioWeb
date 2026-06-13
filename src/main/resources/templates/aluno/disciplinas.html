@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financeiro | Portal do Aluno</title>
+    <title>Disciplinas | Portal do Aluno</title>
     <link rel="icon" type="image/x-icon" href="/images/school_logo.png">
     <link rel="stylesheet" href="/css/portal.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,19 @@
 </head>
 
 <body class="sb-expanded">
+
+<header class="portal-header">
+
+    <div class="usuario">
+        <img src="/images/user_logo.png">
+
+        <div>
+            <p>ELON MUSK DA SILVA</p>
+            <p>3° ANO B</p> <!-- Em vez de ano pode colocar matrícula se achar melhor -->
+        </div>
+    </div>
+
+</header>
 
 <aside>
     <nav>
@@ -42,15 +55,9 @@
                 </a>
             </li>
             <li>
-                <a href="/aluno/financeiro" class="active">
-                    <i class="bx bx-money"></i>
-                    <span>Financeiro</span>
-                </a>
-            </li>
-            <li>
-                <a href="/aluno/notificacoes">
-                    <i class="bx bx-bell"></i>
-                    <span>Notificações</span>
+                <a href="/aluno/disciplinas" class="active">
+                    <i class="bx bx-book"></i>
+                    <span>Disciplinas</span>
                 </a>
             </li>
             <li class="logout">
@@ -64,8 +71,39 @@
 </aside>
 
 <main>
-    <h3>Financeiro</h3>
+    <h3>Disciplinas</h3>
     <hr>
+
+    <div class="disciplinas">
+        <div class="estado-vazio"> <!-- Usado quando não tem disciplinas no momento. Se houver disciplinas, oculte -->
+            <p>Nenhuma disciplina disponível no momento.</p>
+        </div>
+
+        <div class="disciplina">
+
+            <div>
+                <p class="disciplina-label">Disciplina</p>
+                <p class="disciplina-valor">MATEMÁTICA</p>
+            </div>
+
+            <div>
+                <p class="disciplina-label">Tipo de Aula</p>
+                <p class="disciplina-valor">Presencial</p>
+            </div>
+
+            <div>
+                <p class="disciplina-label">Situação</p>
+                <p class="disciplina-valor">Matriculado</p>
+            </div>
+
+            <div>
+                <p class="disciplina-label">Docente</p>
+                <p class="disciplina-valor">RODRIGO MATTOS</p>
+            </div>
+
+        </div>
+    </div>
+
 </main>
 
 <script src="/js/sidebar.js"></script>

@@ -34,6 +34,8 @@ if (slides) {
     }, 5000);
 }
 
+
+
 // Chat
 const chatButton = document.getElementById("chat-button");
 const chatBox = document.getElementById("chat-box");
@@ -52,13 +54,13 @@ if (chatButton && chatBox) {
     });
 }
 
-// Função atualizada para enviar e receber mensagens da IA
+// Função de mensagens IA
 async function enviarMensagem() {
     const texto = input.value.trim();
 
     if (texto === "") return;
 
-    // 1. Exibe a mensagem do usuário
+    // Exibe a mensagem do usuário
     mensagens.innerHTML += `
         <div class="user-message">
             ${texto}
@@ -67,7 +69,7 @@ async function enviarMensagem() {
     input.value = "";
     mensagens.scrollTop = mensagens.scrollHeight;
 
-    // 2. Adiciona um indicador de "digitando..."
+    // Adiciona um indicador de "digitando..."
     const idCarregando = "msg-" + Date.now();
     mensagens.innerHTML += `
         <div class="bot-message" id="${idCarregando}">
@@ -76,7 +78,7 @@ async function enviarMensagem() {
     `;
     mensagens.scrollTop = mensagens.scrollHeight;
 
-    // 3. Faz a requisição para o Back-end
+    // Faz requisição para o Back-end
     try {
         const response = await fetch("http://localhost:3000/api/chat", {
             method: "POST",
@@ -88,11 +90,11 @@ async function enviarMensagem() {
 
         const data = await response.json();
 
-        // 4. Substitui a mensagem de "digitando..." pela resposta do Gemini
+        // Substitui a mensagem de "digitando..." pela resposta do Gemini
         const mensagemBot = document.getElementById(idCarregando);
 
         if (data.resposta) {
-            // Convertendo quebras de linha para <br> no HTML
+            // Converte quebras de linha para <br> no HTML
             mensagemBot.innerHTML = data.resposta.replace(/\n/g, '<br>');
         } else {
             mensagemBot.innerHTML = "Erro ao obter resposta.";
@@ -107,7 +109,7 @@ async function enviarMensagem() {
     mensagens.scrollTop = mensagens.scrollHeight;
 }
 
-// Eventos de clique e teclado (Mantidos do seu código original)
+// Eventos de clique e teclado
 sendButton.onclick = enviarMensagem;
 
 input.addEventListener("keydown", (e) => {
