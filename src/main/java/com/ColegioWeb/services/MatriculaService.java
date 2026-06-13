@@ -6,6 +6,12 @@ import com.ColegioWeb.models.Responsavel;
 import com.ColegioWeb.repositories.AlunoRepository;
 import com.ColegioWeb.repositories.ResponsavelRepository;
 import com.ColegioWeb.repositories.UsuarioRepository;
+import com.ColegioWeb.repositories.PeriodoMatriculaRepository;
+import com.ColegioWeb.repositories.SolicitacaoMatriculaRepository;
+import com.ColegioWeb.models.PeriodoMatricula;
+import com.ColegioWeb.models.SolicitacaoMatricula;
+import com.ColegioWeb.models.StatusMatricula;
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,10 +31,23 @@ public class MatriculaService {
     private ResponsavelRepository responsavelRepository;
 
     @Autowired
+    private PeriodoMatriculaRepository periodoRepository;
+
+    @Autowired
+    private SolicitacaoMatriculaRepository solicitacaoRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void realizarMatricula(MatriculaRequestDTO dto) {
+    public Long realizarMatricula(MatriculaRequestDTO dto) {
+        
+        // Valida o período
+        PeriodoMatricula periodo = periodoRepository.findById(dto.periodoId())
+                .orElseThrow(() -> new IllegalArgumentException("Período de matrícula não encontrado."));
+        if (!periodo.isAberto()) {
+            throw new IllegalArgumentException("O período de matrícula selecionado está fechado.");
+        }
         
         // Validações de duplicidade
         if (usuarioRepository.existsByCpf(dto.cpfAluno())) {
@@ -88,6 +107,17 @@ public class MatriculaService {
         aluno.setQuantidadeDeFaltas(0);
         aluno.setMediaDeDesempenho(0.0);
         
-        alunoRepository.save(aluno);
+        aluno = alunoRepository.save(aluno);
+
+        // Criar Solicitação de Matrícula
+        SolicitacaoMatricula solicitacao = new SolicitacaoMatricula();
+        solicitacao.setAluno(aluno);
+        solicitacao.setPeriodo(periodo);
+        solicitacao.setStatus(StatusMatricula.SOLICITADA);
+        solicitacao.setDataSolicitacao(LocalDateTime.now());
+        
+        solicitacao = solicitacaoRepository.save(solicitacao);
+        
+        return solicitacao.getId();
     }
 }

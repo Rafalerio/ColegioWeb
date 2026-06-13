@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Avaliacao {
+public class HistoricoAluno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,18 +20,12 @@ public class Avaliacao {
     @JoinColumn(name = "aluno_id", nullable = false)
     private Aluno aluno;
 
-    @ManyToOne
-    @JoinColumn(name = "disciplina_id", nullable = false)
-    private Disciplina disciplina;
+    @Column(nullable = false)
+    private String descricao; // Ex: Transferência, Formatura, Trancamento
 
     @Column(nullable = false)
-    private Double nota;
+    private LocalDate dataRegistro;
 
-    private String observacao;
-
-    @Column(nullable = false)
-    private LocalDate dataAvaliacao;
-
-    @Column(nullable = false)
-    private boolean ativo = true;
+    @Column(length = 2000)
+    private String informacoesAcademicas; // JSON ou texto com médias e turmas passadas
 }

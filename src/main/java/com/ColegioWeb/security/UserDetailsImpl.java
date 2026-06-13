@@ -11,9 +11,15 @@ import java.util.Collections;
 public class UserDetailsImpl implements UserDetails {
 
     private final Usuario usuario;
+    private boolean enabled = true;
 
     public UserDetailsImpl(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public UserDetailsImpl(Usuario usuario, boolean enabled) {
+        this.usuario = usuario;
+        this.enabled = enabled;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public Usuario getUsuario() {

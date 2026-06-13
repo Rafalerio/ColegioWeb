@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprovante de Solicitação | Colégio Aprendizagem</title>
+    <link rel="icon" type="image/x-icon" href="/images/school_logo.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <style>
+        .comprovante-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .comprovante-header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .comprovante-header img {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+        .comprovante-body p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            color: #334155;
+        }
+        .comprovante-body strong {
+            color: #0f172a;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+        .btn-voltar {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .btn-voltar:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body style="background-color: #f8fafc;">
+
+<div class="comprovante-container">
+    <div class="comprovante-header">
+        <img src="/images/school_icon.png" alt="Ícone da escola">
+        <h2>Comprovante de Solicitação de Matrícula</h2>
+        <p style="color: #64748b;">Guarde este comprovante para futuras consultas.</p>
+    </div>
+
+    <div class="comprovante-body">
+        <p><strong>Nº da Solicitação:</strong> <span th:text="${solicitacao.id}"></span></p>
+        <p><strong>Data da Solicitação:</strong> <span th:text="${#temporals.format(solicitacao.dataSolicitacao, 'dd/MM/yyyy HH:mm')}"></span></p>
+        <p><strong>Aluno:</strong> <span th:text="${solicitacao.aluno.nome}"></span></p>
+        <p><strong>Matrícula (Provisória):</strong> <span th:text="${solicitacao.aluno.matricula}"></span></p>
+        <p><strong>Período Letivo:</strong> <span th:text="${solicitacao.periodo.nome}"></span></p>
+        <p><strong>Status:</strong> <span class="status-badge" th:text="${solicitacao.status}"></span></p>
+
+        <p style="margin-top: 25px; font-size: 0.95rem; color: #64748b; text-align: center;">
+            Sua solicitação está em análise pela coordenação. Você receberá um aviso assim que a matrícula for confirmada.
+        </p>
+    </div>
+
+    <a href="/login" class="btn-voltar">Ir para o Portal de Login</a>
+</div>
+
+</body>
+</html>

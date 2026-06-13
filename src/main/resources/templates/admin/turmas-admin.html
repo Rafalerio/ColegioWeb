@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turmas | Portal Admin</title>
+    <link rel="icon" type="image/x-icon" href="/images/school_logo.png">
+    <link rel="stylesheet" href="/css/portal.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body class="sb-expanded">
+<aside th:replace="~{admin/avisos-admin :: aside}"></aside>
+<main>
+    <div class="header">
+        <h1>Gerenciar Turmas</h1>
+        <button class="btn-primary" onclick="abrirModalNovaTurma()">+ Nova Turma</button>
+    </div>
+    <div class="content">
+        <p>Aqui o admin poderá cadastrar, editar, inativar turmas e vincular as disciplinas (Requisitos 08 e 09).</p>
+        <table class="table" id="turmasTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Série</th>
+                    <th>Turno</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="turmasTbody">
+                <!-- Populated via JS API Fetch -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Form -->
+    <div id="turmaModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div class="modal-content" style="background:white; padding:20px; border-radius:8px; width:400px; max-width:90%;">
+            <h2 id="modalTitle" style="margin-top:0;">Nova Turma</h2>
+            <form id="turmaForm" style="display:flex; flex-direction:column; gap:10px;">
+                <input type="hidden" id="turmaId" name="id">
+                
+                <label>Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+
+                <label>Série:</label>
+                <input type="text" id="serie" name="serie" required>
+
+                <label>Turno:</label>
+                <select id="turno" name="turno" required>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Noturno">Noturno</option>
+                </select>
+
+                <label>Ano Letivo:</label>
+                <input type="number" id="anoLetivo" name="anoLetivo" required>
+
+                <label>Capacidade Máxima:</label>
+                <input type="number" id="capacidadeMax" name="capacidadeMax" value="30">
+
+                <label>Disciplinas:</label>
+                <select id="disciplinas" name="disciplinas" multiple style="height: 100px;">
+                    <!-- Populated via JS -->
+                </select>
+                <small style="color:#666;">Segure Ctrl/Cmd para selecionar múltiplas disciplinas.</small>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                    <button type="button" class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+<script src="/js/sidebar.js"></script>
+<script src="/js/admin-turmas.js"></script>
+</body>
+</html>

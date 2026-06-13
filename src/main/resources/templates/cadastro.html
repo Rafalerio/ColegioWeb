@@ -26,6 +26,12 @@
             <div id="mensagem-sucesso" style="color: green; margin-bottom: 15px; display: none;">Matrícula realizada com sucesso!</div>
 
             <h3 style="margin-top: 10px;">Dados do Aluno</h3>
+            <label>Período de Matrícula</label>
+            <select name="periodoId" required>
+                <option value="" disabled selected>Selecione um período aberto</option>
+                <option th:each="p : ${periodos}" th:value="${p.id}" th:text="${p.nome + ' (' + p.dataInicio + ' até ' + p.dataFim + ')'}"></option>
+            </select>
+
             <label>Nome do Aluno</label>
             <input type="text" name="nomeAluno" required>
 

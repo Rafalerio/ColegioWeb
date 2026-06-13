@@ -18,6 +18,8 @@ public record TurmaDTO(
         @NotNull(message = "O ano letivo é obrigatório")
         Integer anoLetivo,
 
-        Integer capacidadeMax
+        Integer capacidadeMax,
+        
+        java.util.List<Long> disciplinaIds
 ) {
 }

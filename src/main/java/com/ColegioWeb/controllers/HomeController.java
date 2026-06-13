@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,7 +14,10 @@ import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import com.ColegioWeb.dto.RecuperacaoSenhaDTO;
 import com.ColegioWeb.models.Usuario;
+import com.ColegioWeb.models.SolicitacaoMatricula;
 import com.ColegioWeb.repositories.UsuarioRepository;
+import com.ColegioWeb.repositories.PeriodoMatriculaRepository;
+import com.ColegioWeb.repositories.SolicitacaoMatriculaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
@@ -30,6 +34,12 @@ public class HomeController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private PeriodoMatriculaRepository periodoRepository;
+
+    @Autowired
+    private SolicitacaoMatriculaRepository solicitacaoRepository;
+
     @GetMapping("/")
     public String index(Model model) {
         return "index";
@@ -41,7 +51,8 @@ public class HomeController {
     }
 
     @GetMapping("/cadastro")
-    public String cadastro() {
+    public String cadastro(Model model) {
+        model.addAttribute("periodos", periodoRepository.findByAbertoTrue());
         return "cadastro";
     }
 
@@ -98,16 +109,27 @@ public class HomeController {
         log.info("DEBUG [Cadastro]: Tentando cadastrar matrícula:");
         log.info("Aluno: {}", dto.nomeAluno());
         log.info("Responsável: {}", dto.nomeResponsavel());
+        log.info("Período ID: {}", dto.periodoId());
         log.info("=========================================");
 
         try {
-            matriculaService.realizarMatricula(dto);
-            log.info("DEBUG [Cadastro]: Sucesso! Matrícula salva no banco.");
-            return "redirect:/login?cadastrado"; // Redireciona para o login
+            Long solicitacaoId = matriculaService.realizarMatricula(dto);
+            log.info("DEBUG [Cadastro]: Sucesso! Solicitação criada no banco com ID {}.", solicitacaoId);
+            return "redirect:/comprovante?id=" + solicitacaoId;
         } catch (Exception e) {
             log.error("DEBUG [Cadastro]: Erro ao salvar: {}", e.getMessage());
             return "redirect:/cadastro?erro=true";
         }
+    }
+
+    @GetMapping("/comprovante")
+    public String comprovante(@RequestParam Long id, Model model) {
+        SolicitacaoMatricula solicitacao = solicitacaoRepository.findById(id).orElse(null);
+        if (solicitacao == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("solicitacao", solicitacao);
+        return "comprovante";
     }
 
     @GetMapping("/aluno/avisos")
@@ -145,7 +167,4 @@ public class HomeController {
 
     @GetMapping("/professor/sistema-faltas")
     public String professorSistemaFaltas() { return "professor/sistema-faltas"; }
-
-    @GetMapping("/admin/avisos")
-    public String adminAvisos() { return "admin/avisos-admin"; }
 }
