@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+    <!-- Header Aluno -->
+    <header class="portal-header" th:fragment="aluno-header">
+        <div class="usuario" th:with="user=${#authentication.principal.usuario}">
+            <img src="/images/user_logo.png">
+            <div>
+                <p th:text="${#strings.toUpperCase(user.nome)}">NOME DO ALUNO</p>
+                <p th:text="${user.turma != null ? #strings.toUpperCase(user.turma.serie + ' ' + user.turma.nome) : (user.matricula != null ? 'MATRÍCULA: ' + user.matricula : 'SEM TURMA')}">3° ANO B</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header Professor -->
+    <header class="portal-header" th:fragment="professor-header">
+        <div class="usuario" th:with="user=${#authentication.principal.usuario}">
+            <img src="/images/user_logo.png">
+            <div>
+                <p th:text="${#strings.toUpperCase(user.nome)}">NOME DO PROFESSOR</p>
+                <p th:text="${#strings.toUpperCase(user.especialidade != null && !user.especialidade.isEmpty() ? user.especialidade : 'PROFESSOR')}">PROFESSOR</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header Administrador -->
+    <header class="portal-header" th:fragment="admin-header">
+        <div class="usuario" th:with="user=${#authentication.principal.usuario}">
+            <img src="/images/user_logo.png">
+            <div>
+                <p th:text="${#strings.toUpperCase(user.nome)}">NOME DO ADMIN</p>
+                <p th:text="${#strings.toUpperCase(user.cargo != null && !user.cargo.isEmpty() ? user.cargo : 'ADMINISTRADOR')}">ADMIN</p>
+            </div>
+        </div>
+    </header>
+
+</body>
+</html>

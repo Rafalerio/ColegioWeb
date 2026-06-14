@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,25 +38,90 @@
 
         <nav>
             <a href="/sobre">Sobre o colégio</a>
-            <a href="/segmentos">Segmentos</a>
             <a href="/contato">Contato</a>
         </nav>
     </header>
 
     <main class="carrossel">
-
         <div id="slides">
             <img class="slide" src="/images/img1.jpg">
             <img class="slide" src="/images/img2.jpg">
             <img class="slide" src="/images/img3.jpg">
         </div>
 
+        <div class="hero-overlay">
+            <h1>Colégio Aprendizagem</h1>
+            <p>Educando para o futuro, inspirando gerações com excelência e inovação.</p>
+            <div class="hero-actions">
+                <a href="/cadastro" class="btn-primary">Matricule-se Já</a>
+                <a href="/sobre" class="btn-secondary">Conheça nossa Proposta</a>
+            </div>
+        </div>
+
         <button id="prev"><</button>
-                <button id="next">></button>
+        <button id="next">></button>
     </main>
 
-    <section class="extra">
+    <section class="diferenciais">
+        <div class="section-title">
+            <h2>Nossos Diferenciais</h2>
+            <p>Por que escolher o Colégio Aprendizagem para o futuro do seu filho?</p>
+        </div>
+        <div class="diferenciais-grid">
+            <div class="diferencial-card">
+                <i class="bx bxs-graduation icon"></i>
+                <h3>Foco no ENEM</h3>
+                <p>Preparação intensiva desde o início do Ensino Médio, com simulados recorrentes e material didático focado.</p>
+            </div>
+            <div class="diferencial-card">
+                <i class="bx bxs-institution icon"></i>
+                <h3>Infraestrutura Moderna</h3>
+                <p>Salas de aula climatizadas, laboratórios de ciências e informática, quadra poliesportiva e biblioteca atualizada.</p>
+            </div>
+            <div class="diferencial-card">
+                <i class="bx bxs-devices icon"></i>
+                <h3>Tecnologia na Educação</h3>
+                <p>Uso de ferramentas digitais e recursos tecnológicos interativos para tornar as aulas dinâmicas.</p>
+            </div>
+            <div class="diferencial-card">
+                <i class="bx bxs-palette icon"></i>
+                <h3>Formação Integral</h3>
+                <p>Projetos extracurriculares de robótica, artes, música e esportes para o desenvolvimento completo do aluno.</p>
+            </div>
+        </div>
+    </section>
 
+    <!-- Seção de Segmentos -->
+    <section class="nossos-segmentos">
+        <div class="section-title">
+            <h2>Nossos Segmentos</h2>
+            <p>Acompanhamos a jornada de aprendizado em diferentes etapas da vida escolar</p>
+        </div>
+        <div class="segmentos-grid">
+            <div class="segmento-card">
+                <i class="bx bx-book-reader card-icon"></i>
+                <h3>Ensino Fundamental II</h3>
+                <p>Do 6º ao 9º ano. Desenvolvimento do pensamento crítico, lógica e autonomia dos estudantes.</p>
+            </div>
+            <div class="segmento-card">
+                <i class="bx bxs-edit card-icon"></i>
+                <h3>Ensino Médio</h3>
+                <p>Do 1º ao 3º ano. Formação sólida voltada à cidadania e introdução ao universo acadêmico.</p>
+            </div>
+            <div class="segmento-card">
+                <i class="bx bxs-award card-icon"></i>
+                <h3>Pré-Vestibular / ENEM</h3>
+                <p>Foco total no 3º ano em revisões profundas, vestibulares regionais e no ENEM.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-matricula">
+        <div class="cta-content">
+            <h2>Matrículas Abertas para o Ano Letivo 2026</h2>
+            <p>Garanta a vaga do seu filho na escola pública que é referência em ensino e preparação para o vestibular em Salvador.</p>
+            <a href="/cadastro" class="btn-cta">Iniciar Solicitação de Matrícula</a>
+        </div>
     </section>
 
     <div class="chat-button" id="chat-button">💬</div>
