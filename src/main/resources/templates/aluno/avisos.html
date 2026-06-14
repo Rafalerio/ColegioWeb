@@ -81,24 +81,25 @@
     <hr>
 
     <div class="avisos">
-        <div class="estado-vazio"> <!-- Usado quando não tem avisos no momento. Se houver avisos, oculte -->
-            <p >Nenhum aviso disponível no momento.</p>
+        <div class="estado-vazio" th:if="${avisos.isEmpty()}">
+            <p>Nenhum aviso disponível no momento.</p>
         </div>
 
-        <div class="aviso">
+        <div class="aviso" th:each="aviso : ${avisos}">
             <div class="aviso-header">
                 <div>
-                    <h2>RODRIGO MATTOS</h2>
-                    <span>Professor</span>
+                    <h2 th:text="${aviso.autor.nome}">RODRIGO MATTOS</h2>
+                    <span th:text="${aviso.autor.tipoUsuario == 'ADMIN' ? 'Direção' : 'Professor'}">Professor</span>
+                    <span th:if="${!aviso.isGeral}" th:text="' - ' + ${aviso.turma.nome + ' ' + aviso.turma.serie}" style="margin-left:5px; font-weight:600; color:#3b82f6;"></span>
                 </div>
 
-                <span>12/06/2026</span>
+                <span th:text="${#temporals.format(aviso.dataCriacao, 'dd/MM/yyyy HH:mm')}">12/06/2026</span>
             </div>
 
-            <h3>Dia da prova alterado</h3>
+            <h3 th:text="${aviso.titulo}">Dia da prova alterado</h3>
 
             <div class="aviso-conteudo">
-                <p>
+                <p th:text="${aviso.conteudo}">
                     Devido a circunstâncias pessoais, a prova marcada para o dia 13/06 será alterada para o dia 20/06.
                 </p>
             </div>

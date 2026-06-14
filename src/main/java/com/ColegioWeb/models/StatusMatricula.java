@@ -4,5 +4,6 @@ public enum StatusMatricula {
     SOLICITADA,
     EM_ANALISE,
     CONFIRMADA,
-    CANCELADA
+    CANCELADA,
+    RECUSADA
 }

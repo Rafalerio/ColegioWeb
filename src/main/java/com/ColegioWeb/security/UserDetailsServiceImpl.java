@@ -40,31 +40,48 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info("DEBUG [Login]: Usuário encontrado no banco: {}. Validando senha...", usuario.getNome());
 
         boolean enabled = true;
+        String forcedRole = null;
 
         if (usuario instanceof Aluno) {
             Aluno aluno = (Aluno) usuario;
             List<SolicitacaoMatricula> solicitacoes = solicitacaoRepository.findByAlunoId(aluno.getId());
             boolean isConfirmada = solicitacoes.stream().anyMatch(s -> s.getStatus() == StatusMatricula.CONFIRMADA);
+            boolean hasRecusada = solicitacoes.stream().anyMatch(s -> s.getStatus() == StatusMatricula.RECUSADA || s.getStatus() == StatusMatricula.CANCELADA);
             if (!solicitacoes.isEmpty() && !isConfirmada) {
-                enabled = false;
+                if (hasRecusada) {
+                    forcedRole = "RECUSADO";
+                } else {
+                    enabled = false;
+                }
             }
         } else if (usuario instanceof Responsavel) {
             Responsavel responsavel = (Responsavel) usuario;
             if (responsavel.getAlunos() != null && !responsavel.getAlunos().isEmpty()) {
                 boolean anyConfirmada = false;
+                boolean anyRecusada = false;
                 for (Aluno a : responsavel.getAlunos()) {
                     List<SolicitacaoMatricula> solicitacoes = solicitacaoRepository.findByAlunoId(a.getId());
                     if (solicitacoes.stream().anyMatch(s -> s.getStatus() == StatusMatricula.CONFIRMADA)) {
                         anyConfirmada = true;
                         break;
                     }
+                    if (solicitacoes.stream().anyMatch(s -> s.getStatus() == StatusMatricula.RECUSADA || s.getStatus() == StatusMatricula.CANCELADA)) {
+                        anyRecusada = true;
+                    }
                 }
                 if (!anyConfirmada) {
-                    enabled = false;
+                    if (anyRecusada) {
+                        forcedRole = "RECUSADO";
+                    } else {
+                        enabled = false;
+                    }
                 }
             }
         }
 
+        if (forcedRole != null) {
+            return new UserDetailsImpl(usuario, true, forcedRole);
+        }
         return new UserDetailsImpl(usuario, enabled);
     }
 }

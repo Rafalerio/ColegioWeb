@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Atribuição de Professores</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0f172a; margin-top: 0; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        select, button { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 16px; }
+        button { background-color: #3b82f6; color: white; border: none; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        button:hover { background-color: #2563eb; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background-color: #f1f5f9; font-weight: 600; }
+        .btn-delete { background-color: #ef4444; width: auto; padding: 5px 10px; font-size: 14px; }
+        .btn-delete:hover { background-color: #dc2626; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .nav-link { color: #3b82f6; text-decoration: none; font-weight: 500; }
+        .nav-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Atribuição de Professores às Turmas</h1>
+        <a href="/admin/turmas" class="nav-link">← Voltar para Turmas</a>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+        <div style="flex: 1; background: #f8fafc; padding: 20px; border-radius: 8px;">
+            <h2>Nova Atribuição</h2>
+            <form id="atribuicaoForm">
+                <div class="form-group">
+                    <label for="turmaId">Turma</label>
+                    <select id="turmaId" name="turmaId" required onchange="carregarAtribuicoes()">
+                        <option value="">Selecione a turma...</option>
+                        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nome + ' - ' + turma.serie}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="disciplinaId">Disciplina</label>
+                    <select id="disciplinaId" name="disciplinaId" required>
+                        <option value="">Selecione a disciplina...</option>
+                        <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="professorId">Professor</label>
+                    <select id="professorId" name="professorId" required>
+                        <option value="">Selecione o professor...</option>
+                        <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
+                    </select>
+                </div>
+                <button type="submit">Atribuir Professor</button>
+            </form>
+        </div>
+
+        <div style="flex: 2;">
+            <h2>Atribuições da Turma Selecionada</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Professor</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="atribuicoesBody">
+                    <tr><td colspan="3" style="text-align: center; color: #64748b;">Selecione uma turma para ver as atribuições.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('atribuicaoForm');
+    const turmaSelect = document.getElementById('turmaId');
+    const tbody = document.getElementById('atribuicoesBody');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const turmaId = turmaSelect.value;
+        const disciplinaId = document.getElementById('disciplinaId').value;
+        const professorId = document.getElementById('professorId').value;
+
+        try {
+            const res = await fetch(`/api/admin/turmas/${turmaId}/atribuicao?disciplinaId=${disciplinaId}&professorId=${professorId}`, {
+                method: 'POST'
+            });
+            const text = await res.text();
+            if (res.ok) {
+                alert(text);
+                carregarAtribuicoes();
+            } else {
+                alert('Erro: ' + text);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao realizar atribuição.');
+        }
+    });
+
+    async function carregarAtribuicoes() {
+        const turmaId = turmaSelect.value;
+        if (!turmaId) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #64748b;">Selecione uma turma para ver as atribuições.</td></tr>';
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/admin/turmas/${turmaId}/atribuicoes`);
+            if (res.ok) {
+                const atribuicoes = await res.json();
+                if (atribuicoes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #64748b;">Nenhuma atribuição para esta turma.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = atribuicoes.map(a => `
+                    <tr>
+                        <td>${a.disciplina.nome}</td>
+                        <td>${a.professor.nome}</td>
+                        <td><button class="btn-delete" onclick="removerAtribuicao(${a.id})">Remover</button></td>
+                    </tr>
+                `).join('');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function removerAtribuicao(id) {
+        if (!confirm('Tem certeza que deseja remover esta atribuição?')) return;
+        try {
+            const res = await fetch(`/api/admin/turmas/atribuicao/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                carregarAtribuicoes();
+            } else {
+                alert('Erro ao remover atribuição.');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>
+</body>
+</html>

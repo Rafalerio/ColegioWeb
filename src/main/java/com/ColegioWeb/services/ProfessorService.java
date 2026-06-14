@@ -35,10 +35,10 @@ public class ProfessorService {
     private AvaliacaoRepository avaliacaoRepository;
 
     @Autowired
-    private AvisoRepository avisoRepository;
+    private TarefaRepository tarefaRepository;
 
     @Autowired
-    private TarefaRepository tarefaRepository;
+    private TurmaDisciplinaProfessorRepository turmaDisciplinaProfessorRepository;
 
     @Transactional
     public void lancarFalta(Long professorId, FaltaDTO dto) {
@@ -46,8 +46,9 @@ public class ProfessorService {
         Aluno aluno = alunoRepository.findById(dto.alunoId()).orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado."));
         Disciplina disciplina = disciplinaRepository.findById(dto.disciplinaId()).orElseThrow(() -> new IllegalArgumentException("Disciplina não encontrada."));
 
-        if (!disciplina.getProfessor().getId().equals(professor.getId())) {
-            throw new IllegalStateException("O professor não leciona esta disciplina.");
+        TurmaDisciplinaProfessor tdp = turmaDisciplinaProfessorRepository.findByTurmaIdAndDisciplinaId(aluno.getTurma().getId(), disciplina.getId());
+        if (tdp == null || !tdp.getProfessor().getId().equals(professor.getId())) {
+            throw new IllegalStateException("O professor não leciona esta disciplina para a turma do aluno.");
         }
 
         Falta falta = new Falta();
@@ -66,8 +67,9 @@ public class ProfessorService {
         Aluno aluno = alunoRepository.findById(dto.alunoId()).orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado."));
         Disciplina disciplina = disciplinaRepository.findById(dto.disciplinaId()).orElseThrow(() -> new IllegalArgumentException("Disciplina não encontrada."));
 
-        if (!disciplina.getProfessor().getId().equals(professor.getId())) {
-            throw new IllegalStateException("O professor não leciona esta disciplina.");
+        TurmaDisciplinaProfessor tdp = turmaDisciplinaProfessorRepository.findByTurmaIdAndDisciplinaId(aluno.getTurma().getId(), disciplina.getId());
+        if (tdp == null || !tdp.getProfessor().getId().equals(professor.getId())) {
+            throw new IllegalStateException("O professor não leciona esta disciplina para a turma do aluno.");
         }
 
         Avaliacao avaliacao = new Avaliacao();
@@ -93,23 +95,15 @@ public class ProfessorService {
     }
 
     @Transactional
-    public void criarAviso(Long professorId, AvisoDTO dto) {
-        Professor professor = professorRepository.findById(professorId).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado."));
-        Turma turma = turmaRepository.findById(dto.turmaId()).orElseThrow(() -> new IllegalArgumentException("Turma não encontrada."));
-
-        Aviso aviso = new Aviso();
-        aviso.setProfessor(professor);
-        aviso.setTurma(turma);
-        aviso.setTitulo(dto.titulo());
-        aviso.setConteudo(dto.conteudo());
-        aviso.setDataPublicacao(LocalDate.now());
-        avisoRepository.save(aviso);
-    }
-
-    @Transactional
     public void criarTarefa(Long professorId, TarefaDTO dto) {
         Professor professor = professorRepository.findById(professorId).orElseThrow(() -> new IllegalArgumentException("Professor não encontrado."));
         Turma turma = turmaRepository.findById(dto.turmaId()).orElseThrow(() -> new IllegalArgumentException("Turma não encontrada."));
+
+        java.util.List<TurmaDisciplinaProfessor> tdps = turmaDisciplinaProfessorRepository.findByTurmaId(turma.getId());
+        boolean ensinaNestaTurma = tdps.stream().anyMatch(tdp -> tdp.getProfessor().getId().equals(professor.getId()));
+        if (!ensinaNestaTurma) {
+            throw new IllegalStateException("O professor não leciona nesta turma.");
+        }
 
         Tarefa tarefa = new Tarefa();
         tarefa.setProfessor(professor);

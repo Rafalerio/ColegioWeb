@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrícula Recusada | Colégio Aprendizagem</title>
+    <link rel="icon" type="image/x-icon" href="/images/school_logo.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <style>
+        .comprovante-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .comprovante-header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .comprovante-header img {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+        .comprovante-header h2 {
+            color: #b91c1c;
+        }
+        .comprovante-body p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            color: #334155;
+            text-align: center;
+        }
+        .comprovante-body strong {
+            color: #0f172a;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            background-color: #fecaca;
+            color: #991b1b;
+            margin-top: 10px;
+        }
+        .btn-reenviar {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn-reenviar:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-logout {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            padding: 12px 20px;
+            background-color: transparent;
+            color: #64748b;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-logout:hover {
+            color: #334155;
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+<body style="background-color: #f8fafc;">
+
+<div class="comprovante-container">
+    <div class="comprovante-header">
+        <img src="/images/school_icon.png" alt="Ícone da escola">
+        <h2>Matrícula Recusada</h2>
+        <p style="color: #64748b;">Infelizmente, sua solicitação de matrícula foi recusada.</p>
+    </div>
+
+    <div class="comprovante-body">
+        <p>Houve algum problema com a sua solicitação de matrícula e ela não pôde ser aprovada no momento pela coordenação.</p>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span class="status-badge">Status Atual: RECUSADA</span>
+        </div>
+
+        <p style="margin-top: 25px; font-size: 0.95rem; color: #64748b; text-align: center;">
+            Se você deseja tentar novamente, clique no botão abaixo para reabrir a solicitação e enviá-la para uma nova análise.
+        </p>
+    </div>
+
+    <form action="/aluno/reenviar-matricula" method="post">
+        <button type="submit" class="btn-reenviar">Reenviar Solicitação de Matrícula</button>
+    </form>
+    
+    <a href="/logout" class="btn-logout">Sair</a>
+</div>
+
+</body>
+</html>

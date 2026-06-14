@@ -42,11 +42,6 @@ public class ProfessorController {
         return ResponseEntity.ok("Nota lançada com sucesso e média recalculada.");
     }
 
-    @PostMapping("/avisos")
-    public ResponseEntity<String> criarAviso(@Valid @RequestBody AvisoDTO dto, Authentication authentication) {
-        professorService.criarAviso(getProfessorId(authentication), dto);
-        return ResponseEntity.ok("Aviso criado com sucesso.");
-    }
 
     @PostMapping("/tarefas")
     public ResponseEntity<String> criarTarefa(@Valid @RequestBody TarefaDTO dto, Authentication authentication) {

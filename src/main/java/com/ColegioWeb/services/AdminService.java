@@ -16,6 +16,43 @@ public class AdminService {
     @Autowired
     private com.ColegioWeb.repositories.HistoricoAlunoRepository historicoAlunoRepository;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private com.ColegioWeb.repositories.DisciplinaRepository disciplinaRepository;
+
+    @Transactional
+    public void registrarProfessor(com.ColegioWeb.dto.ProfessorRegistrationDTO dto) {
+        if (usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("E-mail já está em uso.");
+        }
+        if (usuarioRepository.existsByCpf(dto.getCpf())) {
+            throw new IllegalArgumentException("CPF já está em uso.");
+        }
+        if (usuarioRepository.existsByRg(dto.getRg())) {
+            throw new IllegalArgumentException("RG já está em uso.");
+        }
+        
+        com.ColegioWeb.models.Professor prof = new com.ColegioWeb.models.Professor();
+        prof.setNome(dto.getNome());
+        prof.setEmail(dto.getEmail());
+        prof.setSenha(passwordEncoder.encode(dto.getSenha()));
+        prof.setCpf(dto.getCpf());
+        prof.setRg(dto.getRg());
+        prof.setDataNascimento(dto.getDataNascimento());
+        prof.setTelefone(dto.getTelefone());
+        prof.setEndereco(dto.getEndereco());
+        java.util.List<com.ColegioWeb.models.Disciplina> disciplinas = disciplinaRepository.findAllById(dto.getDisciplinasIds());
+        prof.setDisciplinas(disciplinas);
+        String especialidadeConcatenada = disciplinas.stream()
+                .map(com.ColegioWeb.models.Disciplina::getNome)
+                .collect(java.util.stream.Collectors.joining(", "));
+        prof.setEspecialidade(especialidadeConcatenada);
+        
+        usuarioRepository.save(prof);
+    }
+
     @Transactional
     public void alterarStatusUsuario(Long adminId, Long usuarioTargetId, boolean status) {
         // Busca o admin que está fazendo a ação (em um sistema real pegariamos via context do spring security)

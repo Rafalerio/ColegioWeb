@@ -13,15 +13,31 @@ import com.ColegioWeb.models.Disciplina;
 import com.ColegioWeb.repositories.DisciplinaRepository;
 import java.util.Arrays;
 import java.util.List;
+
 /*
 @Configuration
 public class DataInitializer{
     //ALERTA IMPORTANTE: Essa classe só deve ser inicializada com a API somente a primeira vez que rodar para injetar as informações no BD
     //Após a primeira inicialização, comente todo o código para não haver erros de inicialização por parte do BD não aceitar as informações duplicadas, ou retire o arquivo da pasta do projeto.
     @Bean
-    public CommandLineRunner initData(UsuarioRepository usuarioRepository, ProfessorRepository professorRepository, AdministradorRepository administradorRepository, PasswordEncoder passwordEncoder, DisciplinaRepository disciplinaRepository) {
+    public CommandLineRunner initData(UsuarioRepository usuarioRepository, ProfessorRepository professorRepository, AdministradorRepository administradorRepository, PasswordEncoder passwordEncoder, DisciplinaRepository disciplinaRepository, org.springframework.jdbc.core.JdbcTemplate jdbcTemplate) {
         return args -> {
-            
+
+            try {
+                jdbcTemplate.execute("ALTER TABLE aviso DROP COLUMN professor_id");
+                System.out.println("Coluna 'professor_id' removida com sucesso da tabela 'aviso'.");
+            } catch (Exception e) {
+                System.out.println("A coluna 'professor_id' já foi removida ou não existe.");
+            }
+
+//
+            try {
+                jdbcTemplate.execute("ALTER TABLE aviso MODIFY turma_id BIGINT NULL");
+                System.out.println("Coluna 'turma_id' modificada para aceitar NULL.");
+            } catch (Exception e) {
+                System.out.println("A coluna 'turma_id' já permite NULL ou ocorreu um erro.");
+            }
+
             // Inicializar disciplinas fixas se não existirem
             List<String> disciplinasFixas = Arrays.asList(
                     "Lingua Portuguesa", "Matemática", "Historia", "Geografia", "Ciências",
@@ -46,6 +62,12 @@ public class DataInitializer{
                 p1.setSenha(passwordEncoder.encode("prof123"));
                 p1.setEspecialidade("Matemática");
                 p1.setTipoUsuario("PROFESSOR");
+                
+                // Mapear a disciplina
+                disciplinaRepository.findByNome("Matemática").ifPresent(d -> {
+                    p1.setDisciplinas(Arrays.asList(d));
+                });
+
                 professorRepository.save(p1);
             }
 

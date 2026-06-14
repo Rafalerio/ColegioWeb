@@ -20,6 +20,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/login", "/login-funcionario", "/recuperar-senha", "/api/auth/recuperar-senha", "/cadastro", "/comprovante", "/sobre", "/contato", "/segmentos", "/css/**", "/js/**", "/images/**", "/api/matricula").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/professor/**").hasRole("PROFESSOR")
+                        .requestMatchers("/aluno/recusado", "/aluno/reenviar-matricula").hasRole("RECUSADO")
                         .requestMatchers("/aluno/**").hasAnyRole("ALUNO", "RESPONSAVEL")
                         .anyRequest().authenticated()
                 )
@@ -56,6 +57,9 @@ public class WebSecurityConfig {
                                 System.out.println("DEBUG [Login Bloqueado]: Professores e Administradores devem usar o Portal do Servidor");
                                 request.getSession().invalidate();
                                 response.sendRedirect("/login?error=not_student");
+                                return;
+                            } else if (roles.contains("ROLE_RECUSADO")) {
+                                response.sendRedirect("/aluno/recusado");
                                 return;
                             } else {
                                 response.sendRedirect("/aluno/avisos");

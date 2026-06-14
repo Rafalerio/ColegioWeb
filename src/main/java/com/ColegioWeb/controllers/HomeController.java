@@ -40,6 +40,15 @@ public class HomeController {
     @Autowired
     private SolicitacaoMatriculaRepository solicitacaoRepository;
 
+    @Autowired
+    private com.ColegioWeb.repositories.HistoricoMatriculaRepository historicoRepository;
+
+    @Autowired
+    private com.ColegioWeb.repositories.AvisoRepository avisoRepository;
+
+    @Autowired
+    private com.ColegioWeb.repositories.TurmaDisciplinaProfessorRepository tdpRepository;
+
     @GetMapping("/")
     public String index(Model model) {
         return "index";
@@ -133,7 +142,86 @@ public class HomeController {
     }
 
     @GetMapping("/aluno/avisos")
-    public String alunoAvisos() { return "aluno/avisos"; }
+    public String alunoAvisos(Model model, java.security.Principal principal) {
+        String email = principal.getName();
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuario instanceof com.ColegioWeb.models.Aluno) {
+            com.ColegioWeb.models.Aluno aluno = (com.ColegioWeb.models.Aluno) usuario;
+            if (aluno.getTurma() != null) {
+                model.addAttribute("avisos", avisoRepository.findByTurmaIdOrIsGeralTrueOrderByDataCriacaoDesc(aluno.getTurma().getId()));
+            } else {
+                model.addAttribute("avisos", avisoRepository.findByIsGeralTrueOrderByDataCriacaoDesc());
+            }
+        } else if (usuario instanceof com.ColegioWeb.models.Responsavel) {
+            com.ColegioWeb.models.Responsavel resp = (com.ColegioWeb.models.Responsavel) usuario;
+            java.util.Set<com.ColegioWeb.models.Aviso> avisosSet = new java.util.HashSet<>(avisoRepository.findByIsGeralTrueOrderByDataCriacaoDesc());
+            if (resp.getAlunos() != null) {
+                for (com.ColegioWeb.models.Aluno a : resp.getAlunos()) {
+                    if (a.getTurma() != null) {
+                        avisosSet.addAll(avisoRepository.findByTurmaIdOrIsGeralTrueOrderByDataCriacaoDesc(a.getTurma().getId()));
+                    }
+                }
+            }
+            java.util.List<com.ColegioWeb.models.Aviso> avisosList = new java.util.ArrayList<>(avisosSet);
+            avisosList.sort((a1, a2) -> a2.getDataCriacao().compareTo(a1.getDataCriacao()));
+            model.addAttribute("avisos", avisosList);
+        }
+        return "aluno/avisos"; 
+    }
+
+    @GetMapping("/aluno/recusado")
+    public String alunoRecusado() { return "aluno/recusado"; }
+
+    @PostMapping("/aluno/reenviar-matricula")
+    public String reenviarMatricula(java.security.Principal principal) {
+        String email = principal.getName();
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuario != null) {
+            if (usuario instanceof com.ColegioWeb.models.Aluno) {
+                java.util.List<SolicitacaoMatricula> solicitacoes = solicitacaoRepository.findByAlunoId(usuario.getId());
+                for (SolicitacaoMatricula s : solicitacoes) {
+                    if (s.getStatus() == com.ColegioWeb.models.StatusMatricula.RECUSADA || s.getStatus() == com.ColegioWeb.models.StatusMatricula.CANCELADA) {
+                        com.ColegioWeb.models.StatusMatricula statusAnterior = s.getStatus();
+                        s.setStatus(com.ColegioWeb.models.StatusMatricula.EM_ANALISE);
+                        
+                        com.ColegioWeb.models.HistoricoMatricula historico = new com.ColegioWeb.models.HistoricoMatricula();
+                        historico.setSolicitacao(s);
+                        historico.setStatusAnterior(statusAnterior);
+                        historico.setStatusNovo(com.ColegioWeb.models.StatusMatricula.EM_ANALISE);
+                        historico.setDataAlteracao(java.time.LocalDateTime.now());
+                        historico.setAlteradoPor(usuario.getNome());
+                        historicoRepository.save(historico);
+                        
+                        solicitacaoRepository.save(s);
+                    }
+                }
+            } else if (usuario instanceof com.ColegioWeb.models.Responsavel) {
+                com.ColegioWeb.models.Responsavel responsavel = (com.ColegioWeb.models.Responsavel) usuario;
+                if (responsavel.getAlunos() != null) {
+                    for (com.ColegioWeb.models.Aluno a : responsavel.getAlunos()) {
+                        java.util.List<SolicitacaoMatricula> solicitacoes = solicitacaoRepository.findByAlunoId(a.getId());
+                        for (SolicitacaoMatricula s : solicitacoes) {
+                            if (s.getStatus() == com.ColegioWeb.models.StatusMatricula.RECUSADA || s.getStatus() == com.ColegioWeb.models.StatusMatricula.CANCELADA) {
+                                com.ColegioWeb.models.StatusMatricula statusAnterior = s.getStatus();
+                                s.setStatus(com.ColegioWeb.models.StatusMatricula.EM_ANALISE);
+                                
+                                com.ColegioWeb.models.HistoricoMatricula historico = new com.ColegioWeb.models.HistoricoMatricula();
+                                historico.setSolicitacao(s);
+                                historico.setStatusAnterior(statusAnterior);
+                                historico.setStatusNovo(com.ColegioWeb.models.StatusMatricula.EM_ANALISE);
+                                historico.setDataAlteracao(java.time.LocalDateTime.now());
+                                historico.setAlteradoPor(usuario.getNome());
+                                historicoRepository.save(historico);
+                                
+                                solicitacaoRepository.save(s);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/login?resubmitted=true";
+    }
 
     @GetMapping("/aluno/calendario")
     public String alunoCalendario() { return "aluno/calendario"; }
@@ -151,7 +239,21 @@ public class HomeController {
     public String loginFuncionario() { return "login-funcionario"; }
 
     @GetMapping("/professor/avisos")
-    public String professorAvisos() { return "professor/avisos-professor"; }
+    public String professorAvisos(Model model, java.security.Principal principal) {
+        String email = principal.getName();
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuario != null) {
+            model.addAttribute("meusAvisos", avisoRepository.findByAutorIdOrderByDataCriacaoDesc(usuario.getId()));
+            model.addAttribute("avisosGerais", avisoRepository.findByIsGeralTrueOrderByDataCriacaoDesc());
+            java.util.List<com.ColegioWeb.models.TurmaDisciplinaProfessor> tdps = tdpRepository.findByProfessorId(usuario.getId());
+            java.util.Set<com.ColegioWeb.models.Turma> turmasSet = new java.util.HashSet<>();
+            for (var tdp : tdps) {
+                turmasSet.add(tdp.getTurma());
+            }
+            model.addAttribute("turmas", turmasSet);
+        }
+        return "professor/avisos-professor"; 
+    }
 
     @GetMapping("/professor/calendario")
     public String professorCalendario() { return "professor/calendario"; }

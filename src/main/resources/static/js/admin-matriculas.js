@@ -103,7 +103,7 @@ async function carregarSolicitacoes() {
             if (s.status === "SOLICITADA" || s.status === "EM_ANALISE") {
                 acoes = `
                     <button onclick="prepararAprovacao(${s.id})" style="padding: 5px; cursor: pointer; color: #10b981;">Aprovar</button>
-                    <button onclick="alterarStatusSolicitacao(${s.id}, 'CANCELADA')" style="padding: 5px; cursor: pointer; color: #ef4444;">Reprovar</button>
+                    <button onclick="alterarStatusSolicitacao(${s.id}, 'RECUSADA')" style="padding: 5px; cursor: pointer; color: #ef4444;">Reprovar</button>
                 `;
             } else {
                 acoes = `<span style="color: #64748b; font-size: 0.9em;">Já processada</span>`;

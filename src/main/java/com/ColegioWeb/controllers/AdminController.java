@@ -20,7 +20,19 @@ public class AdminController {
     private AdminService adminService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository; // Temporário para listar usuários
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private com.ColegioWeb.repositories.TurmaDisciplinaProfessorRepository tdpRepository;
+    
+    @Autowired
+    private com.ColegioWeb.repositories.TurmaRepository turmaRepository;
+    
+    @Autowired
+    private com.ColegioWeb.repositories.DisciplinaRepository disciplinaRepository;
+    
+    @Autowired
+    private com.ColegioWeb.repositories.ProfessorRepository professorRepository;
 
     @GetMapping("/usuarios")
     @PreAuthorize("hasRole('ADMIN')")
@@ -49,5 +61,47 @@ public class AdminController {
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/turmas/{turmaId}/atribuicao")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> atribuirProfessor(@PathVariable Long turmaId, @RequestParam Long disciplinaId, @RequestParam Long professorId) {
+        com.ColegioWeb.models.Turma turma = turmaRepository.findById(turmaId).orElseThrow();
+        com.ColegioWeb.models.Disciplina disciplina = disciplinaRepository.findById(disciplinaId).orElseThrow();
+        com.ColegioWeb.models.Professor professor = professorRepository.findByIdWithDisciplinas(professorId).orElseThrow();
+        
+        if (professor.getDisciplinas().stream().noneMatch(d -> d.getId().equals(disciplinaId))) {
+            return ResponseEntity.badRequest().body("O professor não está qualificado para lecionar esta disciplina.");
+        }
+        
+        com.ColegioWeb.models.TurmaDisciplinaProfessor existente = tdpRepository.findByTurmaIdAndDisciplinaId(turmaId, disciplinaId);
+        if (existente != null) {
+            if (existente.getProfessor().getId().equals(professorId)) {
+                return ResponseEntity.badRequest().body("Este professor já está atribuído a esta disciplina nesta turma.");
+            } else {
+                return ResponseEntity.badRequest().body("Já existe um professor atribuído a esta disciplina nesta turma. Remova-o primeiro.");
+            }
+        }
+        
+        com.ColegioWeb.models.TurmaDisciplinaProfessor tdp = new com.ColegioWeb.models.TurmaDisciplinaProfessor();
+        tdp.setTurma(turma);
+        tdp.setDisciplina(disciplina);
+        tdp.setProfessor(professor);
+        tdpRepository.save(tdp);
+        
+        return ResponseEntity.ok("Professor atribuído com sucesso.");
+    }
+    
+    @DeleteMapping("/turmas/atribuicao/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> removerAtribuicao(@PathVariable Long id) {
+        tdpRepository.deleteById(id);
+        return ResponseEntity.ok("Atribuição removida com sucesso.");
+    }
+    
+    @GetMapping("/turmas/{turmaId}/atribuicoes")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<java.util.List<com.ColegioWeb.models.TurmaDisciplinaProfessor>> listarAtribuicoes(@PathVariable Long turmaId) {
+        return ResponseEntity.ok(tdpRepository.findByTurmaId(turmaId));
     }
 }

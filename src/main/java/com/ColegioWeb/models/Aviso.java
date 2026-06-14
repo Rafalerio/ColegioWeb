@@ -2,6 +2,7 @@ package com.ColegioWeb.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,16 @@ public class Aviso {
     private LocalDate dataPublicacao;
 
     @ManyToOne
-    @JoinColumn(name = "professor_id", nullable = false)
-    private Professor professor;
+    @JoinColumn(name = "autor_id", nullable = false)
+    private Usuario autor;
 
     @ManyToOne
-    @JoinColumn(name = "turma_id", nullable = false)
+    @JoinColumn(name = "turma_id")
     private Turma turma;
+
+    @Column(nullable = false)
+    private boolean isGeral = false;
+
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDateTime dataCriacao;
 }

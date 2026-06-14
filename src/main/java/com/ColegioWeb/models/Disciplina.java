@@ -21,9 +21,9 @@ public class Disciplina {
     @Column(nullable = false)
     private Integer cargaHoraria; // Ex de "carga horária"
 
-    @ManyToOne
-    @JoinColumn(name = "professor_id")
-    private Professor professor;
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToMany(mappedBy = "disciplinas")
+    private java.util.List<Professor> professores;
 
     @Column(nullable = false)
     private boolean ativo = true;

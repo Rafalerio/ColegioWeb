@@ -12,6 +12,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Usuario usuario;
     private boolean enabled = true;
+    private String forcedRole = null;
 
     public UserDetailsImpl(Usuario usuario) {
         this.usuario = usuario;
@@ -22,9 +23,16 @@ public class UserDetailsImpl implements UserDetails {
         this.enabled = enabled;
     }
 
+    public UserDetailsImpl(Usuario usuario, boolean enabled, String forcedRole) {
+        this.usuario = usuario;
+        this.enabled = enabled;
+        this.forcedRole = forcedRole;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usuario.getTipoUsuario()));
+        String role = (forcedRole != null) ? forcedRole : usuario.getTipoUsuario();
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override

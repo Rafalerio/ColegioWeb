@@ -37,31 +37,43 @@
                 </button>
             </li>
             <li>
-                <a href="/admin/avisos">
+                <a th:href="@{/admin/avisos}">
                     <i class="bx bxs-megaphone"></i>
                     <span>Avisos</span>
                 </a>
             </li>
             <li>
-                <a href="/admin/turmas">
+                <a th:href="@{/admin/turmas}">
                     <i class="bx bx-chalkboard"></i>
                     <span>Turmas</span>
                 </a>
             </li>
             <li>
-                <a href="/admin/disciplinas">
+                <a th:href="@{/admin/disciplinas}">
                     <i class="bx bx-book"></i>
                     <span>Disciplinas</span>
                 </a>
             </li>
             <li>
-                <a href="/admin/matriculas">
+                <a th:href="@{/admin/matriculas}">
                     <i class="bx bx-file"></i>
                     <span>Solicitações</span>
                 </a>
             </li>
+            <li>
+                <a th:href="@{/admin/cadastrar-professor}">
+                    <i class="bx bx-user-plus"></i>
+                    <span>Cadastrar Professor</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/atribuicao-professores}">
+                    <i class="bx bx-chalkboard"></i>
+                    <span>Atribuir Professores</span>
+                </a>
+            </li>
             <li class="logout">
-                <a href="/">
+                <a th:href="@{/}">
                     <i class="bx bx-log-out"></i>
                     <span>Sair</span>
                 </a>
@@ -71,18 +83,85 @@
 </aside>
 
 <main>
-    <h3>Avisos</h3>
-    <hr>
-
     <div class="criar-aviso">
         <h4>Novo Aviso</h4>
-
-        <input type="text" placeholder="Título">
-
-        <textarea rows="5" placeholder="Digite o aviso..."></textarea>
-
-        <button>Criar Aviso</button>
+        <form id="formAviso" onsubmit="postarAviso(event)">
+            <input type="text" id="tituloAviso" placeholder="Título" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            <textarea id="conteudoAviso" rows="5" placeholder="Digite o aviso..." required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px;"></textarea>
+            <select id="turmaAviso" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px;">
+                <option value="">Geral (Todas as Turmas)</option>
+                <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nome + ' - ' + turma.serie}"></option>
+            </select>
+            <button type="submit" style="background-color: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">Criar Aviso</button>
+        </form>
     </div>
+
+    <hr style="margin: 30px 0;">
+    <h3>Avisos Postados (Todos)</h3>
+    <div class="avisos" style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+        <div class="estado-vazio" th:if="${avisos.isEmpty()}">
+            <p style="color: #64748b;">Nenhum aviso postado no sistema.</p>
+        </div>
+
+        <div class="aviso" th:each="aviso : ${avisos}" style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; position: relative;">
+            <div class="aviso-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                <div>
+                    <h2 th:text="${aviso.autor.nome}" style="margin: 0; font-size: 1.1rem; color: #0f172a;">Nome</h2>
+                    <span th:text="${aviso.autor.tipoUsuario == 'ADMIN' ? 'Direção' : 'Professor'}" style="font-size: 0.9rem; color: #64748b;">Autor</span>
+                    <span th:if="${aviso.isGeral}" style="margin-left:5px; font-weight:600; color:#10b981; font-size: 0.9rem;"> - GERAL</span>
+                    <span th:if="${!aviso.isGeral}" th:text="' - ' + ${aviso.turma.nome + ' ' + aviso.turma.serie}" style="margin-left:5px; font-weight:600; color:#3b82f6; font-size: 0.9rem;"></span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <span th:text="${#temporals.format(aviso.dataCriacao, 'dd/MM/yyyy HH:mm')}" style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px;">Data</span>
+                    <button class="btn-delete" th:onclick="'deletarAviso(' + ${aviso.id} + ')'" style="background-color: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Excluir</button>
+                </div>
+            </div>
+            <h3 th:text="${aviso.titulo}" style="margin: 0 0 10px 0; color: #1e293b;">Título</h3>
+            <div class="aviso-conteudo">
+                <p th:text="${aviso.conteudo}" style="margin: 0; color: #334155; line-height: 1.5;">Conteúdo</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function postarAviso(e) {
+            e.preventDefault();
+            const titulo = document.getElementById('tituloAviso').value;
+            const conteudo = document.getElementById('conteudoAviso').value;
+            const turmaId = document.getElementById('turmaAviso').value || null;
+
+            try {
+                const res = await fetch('/api/avisos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo, conteudo, turmaId })
+                });
+                if (res.ok) {
+                    alert('Aviso criado com sucesso!');
+                    window.location.reload();
+                } else {
+                    const text = await res.text();
+                    alert('Erro: ' + text);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function deletarAviso(id) {
+            if(!confirm("Tem certeza que deseja excluir este aviso?")) return;
+            try {
+                const res = await fetch(`/api/avisos/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Erro ao excluir aviso.');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    </script>
 </main>
 
 <script src="/js/sidebar.js"></script>
