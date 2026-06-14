@@ -15,6 +15,19 @@
 
 <body class="sb-expanded">
 
+<header class="portal-header">
+
+    <div class="usuario">
+        <img src="/images/user_logo.png">
+
+        <div>
+            <p>RODRIGO MATTOS</p>
+            <p>PROFESSOR</p>
+        </div>
+    </div>
+
+</header>
+
 <aside>
     <nav>
         <ul>
@@ -30,39 +43,27 @@
                 </a>
             </li>
             <li>
-                <a href="/professor/calendario">
-                    <i class="bx bx-calendar-event"></i>
-                    <span>Calendário</span>
-                </a>
-            </li>
-            <li>
                 <a href="/professor/avaliacoes" class="active">
                     <i class="bx bx-line-chart"></i>
                     <span>Avaliações</span>
                 </a>
             </li>
             <li>
-                <a href="/professor/financeiro">
-                    <i class="bx bx-money"></i>
-                    <span>Financeiro</span>
-                </a>
-            </li>
-            <li>
-                <a href="/professor/notificacoes">
-                    <i class="bx bx-bell"></i>
-                    <span>Notificações</span>
-                </a>
-            </li>
-            <li>
-                <a href="/professor/situacao-aluno">
-                    <i class='bx bx-search-alt'></i>
-                    <span>Situação do Aluno</span>
+                <a href="/professor/disciplinas">
+                    <i class="bx bx-book"></i>
+                    <span>Disciplinas</span>
                 </a>
             </li>
             <li>
                 <a href="/professor/sistema-faltas">
                     <i class='bx bx-bar-chart-square'></i>
                     <span>Sistema de Faltas</span>
+                </a>
+            </li>
+            <li>
+                <a href="/professor/situacao-aluno">
+                    <i class='bx bx-search-alt'></i>
+                    <span>Situação do Aluno</span>
                 </a>
             </li>
             <li class="logout">
@@ -79,71 +80,67 @@
     <h3>Avaliações</h3>
     <hr>
 
-    <div class="avaliacoes">
+    <div class="avaliacoes-professor">
+        <button onclick="abrirModalAvaliacao()" class="btn-criar">
+            Nova Avaliação
+        </button>
 
-        <div class="card-avaliacao">
-            <div class="info">
-                <h2>Matemática</h2>
-
-                <div class="dados">
-                    <span><i class="bx bxs-time"></i>40 min</span>
-                    <span><i class="bx bx-book-content"></i>10 questões</span>
-                    <span><i class="bx bx-calendar"></i>15/06/2026</span>
-                    <span><i class="bx bxs-calendar"></i>Professor(a) João</span>
-                </div>
-
-                <div class="botoes">
-                    <button class="btn-continuar">
-                        Continuar
-                    </button>
-
-                    <button class="btn-detalhes">
-                        Detalhes
-                    </button>
-                </div>
+        <div class="avaliacao">
+            <div>
+                <h3>Prova 1</h3>
+                <p>Matemática - 3º Ano B</p>
             </div>
 
-            <div class="progresso">
-                <div class="circulo">
-                    <span>64%</span>
-                </div>
+            <div>
+                <span>20/06/2026</span>
             </div>
 
+            <div class="acoes">
+                <button onclick="abrirModalNotas()">Lançar Notas</button>
+                <button>Excluir</button>
+            </div>
         </div>
-
-        <div class="card-avaliacao">
-            <div class="info">
-                <h2>Português</h2>
-
-                <div class="dados">
-                    <span><i class="bx bxs-time"></i>30 min</span>
-                    <span><i class="bx bx-book-content"></i>8 questões</span>
-                    <span><i class="bx bx-calendar"></i>18/06/2026</span>
-                    <span><i class="bx bxs-calendar"></i>Professor(a) Paula</span>
-                </div>
-
-                <div class="botoes">
-                    <button class="btn-continuar">
-                        Continuar
-                    </button>
-
-                    <button class="btn-detalhes">
-                        Detalhes
-                    </button>
-                </div>
-            </div>
-
-            <div class="progresso">
-                <div class="circulo">
-                    <span>80%</span>
-                </div>
-            </div>
-
-        </div>
-
     </div>
+
+    <div id="modalAvaliacao" class="modal">
+        <form class="avaliacao-form">
+            <input type="text" placeholder="Nome da Avaliação">
+
+            <select>
+                <option>Matemática</option>
+            </select>
+
+            <select>
+                <option>3° Ano B</option>
+            </select>
+
+            <input type="date">
+
+            <input type="number" placeholder="Valor da prova">
+
+            <button type="submit">Criar Avaliação</button>
+        </form>
+    </div>
+
+    <div id="modalNotas" class="modal">
+        <div class="lancar-notas">
+            <div class="aluno-nota">
+                <span>Carlinhos Horsen</span>
+                <input type="number" min="0" max="10" step="0.1">
+            </div>
+
+            <div class="aluno-nota">
+                <span>Dalva Nopanten</span>
+                <input type="number" min="0" max="10" step="0.1">
+            </div>
+
+            <button>Salvar Notas</button>
+        </div>
+    </div>
+
 </main>
 
 <script src="/js/sidebar.js"></script>
+<script src="/js/professor-avaliacoes.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário | Portal do Professor</title>
+    <title>Sistema de Faltas | Portal do Aluno</title>
     <link rel="icon" type="image/x-icon" href="/images/school_logo.png">
     <link rel="stylesheet" href="/css/portal.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,19 @@
 
 <body class="sb-expanded">
 
+<header class="portal-header">
+
+    <div class="usuario">
+        <img src="/images/user_logo.png">
+
+        <div>
+            <p>ELON MUSK DA SILVA</p>
+            <p>3° ANO B</p> <!-- Em vez de ano pode colocar matrícula se achar melhor -->
+        </div>
+    </div>
+
+</header>
+
 <aside>
     <nav>
         <ul>
@@ -24,43 +37,31 @@
                 </button>
             </li>
             <li>
-                <a href="/professor/avisos">
+                <a href="/aluno/avisos">
                     <i class="bx bxs-megaphone"></i>
                     <span>Avisos</span>
                 </a>
             </li>
             <li>
-                <a href="/professor/calendario" class="active">
+                <a href="/aluno/calendario">
                     <i class="bx bx-calendar-event"></i>
                     <span>Calendário</span>
                 </a>
             </li>
             <li>
-                <a href="/professor/avaliacoes">
+                <a href="/aluno/avaliacoes">
                     <i class="bx bx-line-chart"></i>
                     <span>Avaliações</span>
                 </a>
             </li>
             <li>
-                <a href="/professor/financeiro">
-                    <i class="bx bx-money"></i>
-                    <span>Financeiro</span>
+                <a href="/aluno/disciplinas">
+                    <i class="bx bx-book"></i>
+                    <span>Disciplinas</span>
                 </a>
             </li>
             <li>
-                <a href="/professor/notificacoes">
-                    <i class="bx bx-bell"></i>
-                    <span>Notificações</span>
-                </a>
-            </li>
-            <li>
-                <a href="/professor/situacao-aluno">
-                    <i class='bx bx-search-alt'></i>
-                    <span>Situação do Aluno</span>
-                </a>
-            </li>
-            <li>
-                <a href="/professor/sistema-faltas">
+                <a href="/aluno/sistema-faltas" class="active">
                     <i class='bx bx-bar-chart-square'></i>
                     <span>Sistema de Faltas</span>
                 </a>
@@ -76,8 +77,54 @@
 </aside>
 
 <main>
-    <h3>Calendário</h3>
+    <h3>Sistema de Faltas</h3>
     <hr>
+
+    <div class="sistema-faltas">
+
+        <div class="materia-faltas">
+
+            <div class="faltas-header">
+                <p>Matemática</p>
+            </div>
+
+            <div class="faltas-info">
+
+                <div>
+                    <p class="faltas-label">Faltas</p>
+                    <p class="faltas-valor">3</p>
+                </div>
+
+                <div>
+                    <p class="faltas-label">Limite</p>
+                    <p class="faltas-valor">10</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="materia-faltas">
+
+            <div class="faltas-header">
+                <p>Dança</p>
+            </div>
+
+            <div class="faltas-info">
+
+                <div>
+                    <p class="faltas-label">Faltas</p>
+                    <p class="faltas-valor">5</p>
+                </div>
+
+                <div>
+                    <p class="faltas-label">Limite</p>
+                    <p class="faltas-valor">12</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </main>
 
 <script src="/js/sidebar.js"></script>

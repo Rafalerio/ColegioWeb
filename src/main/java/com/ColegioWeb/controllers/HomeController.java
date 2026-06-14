@@ -144,6 +144,9 @@ public class HomeController {
     @GetMapping("/aluno/disciplinas")
     public String alunoDisciplinas() { return "aluno/disciplinas"; }
 
+    @GetMapping("/aluno/sistema-faltas")
+    public String alunoSistemaFaltas() { return "aluno/sistema-faltas"; }
+
     @GetMapping("/login-funcionario")
     public String loginFuncionario() { return "login-funcionario"; }
 
@@ -156,15 +159,12 @@ public class HomeController {
     @GetMapping("/professor/avaliacoes")
     public String professorAvaliacoes() { return "professor/avaliacoes"; }
 
-    @GetMapping("/professor/financeiro")
-    public String professorFinanceiro() { return "professor/financeiro"; }
-
-    @GetMapping("/professor/notificacoes")
-    public String professorNotificacoes() { return "professor/notificacoes"; }
-
-    @GetMapping("/professor/situacao-aluno")
-    public String professorSituacaoAluno() { return "professor/situacao-aluno"; }
+    @GetMapping("/professor/disciplinas")
+    public String professorDisciplinas() { return "professor/disciplinas"; }
 
     @GetMapping("/professor/sistema-faltas")
     public String professorSistemaFaltas() { return "professor/sistema-faltas"; }
+
+    @GetMapping("/professor/situacao-aluno")
+    public String professorSituacaoAluno() { return "professor/situacao-aluno"; }
 }

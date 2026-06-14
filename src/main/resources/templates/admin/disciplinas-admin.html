@@ -12,13 +12,27 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body class="sb-expanded">
+
+<header class="portal-header">
+
+    <div class="usuario">
+        <img src="/images/user_logo.png">
+
+        <div>
+            <p>DAVY JONES</p>
+            <p>ADMIN</p>
+        </div>
+    </div>
+
+</header>
+
 <aside th:replace="~{admin/avisos-admin :: aside}"></aside>
 <main>
-    <div class="header">
-        <h1>Gerenciar Disciplinas</h1>
-        <button class="btn-primary" onclick="alert('Funcionalidade de cadastro a implementar em JS')">+ Nova Disciplina</button>
-    </div>
+    <h3>Disciplinas</h3>
+    <hr>
+
     <div class="content">
+        <button class="btn-primary btn-new" onclick="alert('Funcionalidade de cadastro a implementar em JS')">Nova Disciplina</button>
         <p>Aqui o admin poderá cadastrar, editar, inativar disciplinas (Requisito 07).</p>
         <table class="table" id="disciplinasTable">
             <thead>

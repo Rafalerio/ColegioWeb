@@ -15,6 +15,19 @@
 
 <body class="sb-expanded">
 
+<header class="portal-header">
+
+    <div class="usuario">
+        <img src="/images/user_logo.png">
+
+        <div>
+            <p>DAVY JONES</p>
+            <p>ADMIN</p>
+        </div>
+    </div>
+
+</header>
+
 <aside>
     <nav>
         <ul>
@@ -22,6 +35,12 @@
                 <button data-resize-btn>
                     <i class="bx bx-menu"></i>
                 </button>
+            </li>
+            <li>
+                <a href="/admin/avisos">
+                    <i class="bx bxs-megaphone"></i>
+                    <span>Avisos</span>
+                </a>
             </li>
             <li>
                 <a href="/admin/turmas">
@@ -52,7 +71,18 @@
 </aside>
 
 <main>
+    <h3>Avisos</h3>
+    <hr>
 
+    <div class="criar-aviso">
+        <h4>Novo Aviso</h4>
+
+        <input type="text" placeholder="Título">
+
+        <textarea rows="5" placeholder="Digite o aviso..."></textarea>
+
+        <button>Criar Aviso</button>
+    </div>
 </main>
 
 <script src="/js/sidebar.js"></script>

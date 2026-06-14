@@ -70,7 +70,7 @@ nav a span {
     font-size: 0.9rem;
     opacity: 0;
     visibility: hidden;
-
+    white-space: nowrap;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
@@ -239,6 +239,156 @@ main {
     color: #f5f5f5;
 }
 
+.avaliacoes-professor {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.btn-criar {
+    align-self: flex-end;
+    background-color: #20316c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.btn-criar:hover {
+    background-color: #293e93;
+}
+
+.avaliacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.avaliacao h3 {
+    color: #20316c;
+    margin-bottom: 5px;
+}
+
+.avaliacao p {
+    color: #515151;
+}
+
+.avaliacao span {
+    font-weight: bold;
+    color: #444;
+}
+
+.acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.acoes button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #20316c;
+    color: white;
+    transition: background-color .3s;
+}
+
+.acoes button:hover {
+    background-color: #293e93;
+}
+
+.avaliacao-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.avaliacao-form input, .avaliacao-form select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.avaliacao-form button {
+    align-self: flex-end;
+    background-color: #20316c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.avaliacao-form button:hover {
+    background-color: #293e93;
+}
+
+.lancar-notas {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.aluno-nota {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.aluno-nota input {
+    width: 90px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.lancar-notas button {
+    align-self: flex-end;
+    background-color: #20316c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.lancar-notas button:hover {
+    background-color: #293e93;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
 @media (min-width: 1001px) {
     .avaliacoes {
         grid-template-columns: repeat(2, 1fr);
@@ -252,6 +402,30 @@ main {
 
     .card-avaliacao {
         flex-direction: row;
+    }
+
+    .avaliacao {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .acoes {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .acoes button {
+        width: 100%;
+    }
+
+    .aluno-nota {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .aluno-nota input {
+        width: 100%;
     }
 }
 
@@ -344,6 +518,44 @@ main {
     line-height: 1.6;
     color: #444;
     text-align: justify;
+}
+
+.criar-aviso {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.criar-aviso input, .criar-aviso textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.criar-aviso textarea {
+    resize: vertical;
+}
+
+.criar-aviso button {
+    align-self: flex-end;
+    background-color: #20316c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.criar-aviso button:hover {
+    background-color: #293e93;
 }
 
 @media (max-width: 600px) {
@@ -452,5 +664,289 @@ main {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+    }
+}
+
+/* Sistema de Faltas */
+.sistema-faltas {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.materia-faltas {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.faltas-header {
+    display: flex;
+    font-weight: bold;
+    color: #1b2545;
+}
+
+.faltas-info {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(50px, 4vw, 200px);
+}
+
+.faltas-label {
+    color: #515151;
+}
+
+.faltas-valor {
+    font-weight: bold;
+    color: #1b2545;
+}
+
+.faltas-professor {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.faltas-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.faltas-card h3 {
+    color: #20316c;
+    margin-bottom: 5px;
+}
+
+.faltas-card p {
+    color: #515151;
+}
+
+.faltas-card span {
+    font-weight: bold;
+    color: #20316c;
+}
+
+.falta-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.falta-form h2 {
+    color: #20316c;
+}
+
+.falta-form select, .falta-form input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.falta-form button[type="submit"] {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #20316c;
+    color: white;
+    cursor: pointer;
+}
+
+.faltas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.faltas-lista h2 {
+    color: #20316c;
+}
+
+.faltas-registro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.faltas-registro button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+    .faltas-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .acoes {
+        width: 100%;
+    }
+
+    .acoes button {
+        width: 100%;
+    }
+}
+
+/* Solicitações Admin */
+.content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.12);
+    margin-top: 30px;
+}
+
+.content h2 {
+    margin-bottom: 15px;
+    color: #20316c;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+.table th {
+    background-color: #20316c;
+    color: white;
+    text-align: left;
+    padding: 12px;
+}
+
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.table tr:hover {
+    background-color: #f8f8f8;
+}
+
+.btn-primary {
+    background-color: #20316c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    background-color: #293e93;
+}
+
+.btn-new {
+    margin-bottom: 10px;
+}
+
+.modal-content {
+    background-color: white;
+    width: 100%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.2);
+}
+
+.modal-content h2 {
+    color: #20316c;
+    margin-bottom: 20px;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content label {
+    font-weight: 600;
+    color: #444;
+}
+
+.modal-content input, .modal-content select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.modal-content input:focus, .modal-content select:focus {
+    outline: none;
+    border-color: #20316c;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 15px;
+        overflow-x: auto;
+    }
+
+    .table {
+        min-width: 700px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+
+    .modal-content input, .modal-content select {
+        width: 100%;
     }
 }
