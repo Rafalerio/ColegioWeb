@@ -54,6 +54,9 @@ if (chatButton && chatBox) {
     });
 }
 
+// Histórico do Chat em memória (stateless no backend)
+let chatHistory = [];
+
 // Função de mensagens IA
 async function enviarMensagem() {
     const texto = input.value.trim();
@@ -68,6 +71,9 @@ async function enviarMensagem() {
     `;
     input.value = "";
     mensagens.scrollTop = mensagens.scrollHeight;
+
+    // Adiciona a mensagem atual ao histórico local
+    chatHistory.push({ role: 'user', parts: [{ text: texto }] });
 
     // Adiciona um indicador de "digitando..."
     const idCarregando = "msg-" + Date.now();
@@ -85,7 +91,7 @@ async function enviarMensagem() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ mensagem: texto })
+            body: JSON.stringify({ mensagem: texto, historico: chatHistory })
         });
 
         const data = await response.json();
@@ -96,6 +102,8 @@ async function enviarMensagem() {
         if (data.resposta) {
             // Converte quebras de linha para <br> no HTML
             mensagemBot.innerHTML = data.resposta.replace(/\n/g, '<br>');
+            // Adiciona a resposta da IA ao histórico local
+            chatHistory.push({ role: 'model', parts: [{ text: data.resposta }] });
         } else {
             mensagemBot.innerHTML = "Erro ao obter resposta.";
         }
@@ -117,6 +125,3 @@ input.addEventListener("keydown", (e) => {
         enviarMensagem();
     }
 });
-
-// Redefinição de senha
-// A lógica de recuperação de senha foi movida para o backend usando Thymeleaf

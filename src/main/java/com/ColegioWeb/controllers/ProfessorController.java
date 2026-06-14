@@ -48,4 +48,9 @@ public class ProfessorController {
         professorService.criarTarefa(getProfessorId(authentication), dto);
         return ResponseEntity.ok("Tarefa criada com sucesso.");
     }
+
+    @GetMapping("/situacao-aluno")
+    public String situacaoAluno() {
+        return "professor/situacao-aluno";
+    }
 }

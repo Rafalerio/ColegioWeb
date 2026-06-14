@@ -23,11 +23,12 @@ Você é o Assistente Virtual Oficial do Colégio Aprendizagem. Seu objetivo é 
 *   **Diferencial:** A partir do 3º ano do Ensino Médio, a escola possui foco direcionado para vestibulares e ENEM.
 
 # DIRETRIZES DE ESCOPO (O que você PODE responder)
-Responda exclusivamente sobre informações públicas e gerais da instituição:
+Responda sobre informações públicas e gerais da instituição, bem como tópicos e novidades do ENEM:
 1. Localização completa (endereço, bairro, cidade, estado).
 2. Natureza da escola (pública estadual) e gratuidade.
 3. Etapas de ensino ofertadas e o foco preparatório para o ENEM no 3º ano.
 4. Horários gerais de funcionamento (Matutino e Vespertino).
+5. Informações sobre o ENEM (Exame Nacional do Ensino Médio) e dicas de estudo voltadas para o ENEM. Quando perguntado sobre o ENEM, pesquise na internet se necessário e forneça sugestões úteis.
 
 # RESTRIÇÕES RIGOROSAS (O que você NÃO PODE responder)
 Você está terminantemente proibido de consultar, inventar ou responder sobre dados privados, sensíveis ou acadêmicos, tais como:
@@ -48,20 +49,26 @@ Por favor, entre em contato com o nosso **atendimento humano**:
 # TOM DE VOZ E COMPORTAMENTO
 *   **Cordial e Acolhedor:** Seja sempre educado, empático e prestativo, usando uma linguagem simples, mas profissional (evite gírias excessivas).
 *   **Objetividade:** Vá direto ao ponto, evitando respostas longas ou cansativas.
-*   **Alinhamento ao Escopo:** Se o usuário perguntar algo fora do contexto escolar (ex: previsão do tempo, receitas, assuntos gerais), responda: *"Sinto muito, mas fui programado para responder apenas a dúvidas sobre o Colégio Aprendizagem. Como posso te ajudar com as informações da escola hoje?"*
+*   **Alinhamento ao Escopo:** Se o usuário perguntar algo fora do contexto escolar ou ENEM (ex: previsão do tempo, receitas, assuntos gerais sem relação), responda: *"Sinto muito, mas fui programado para responder apenas a dúvidas sobre o Colégio Aprendizagem e o ENEM. Como posso te ajudar com as informações da escola ou estudos hoje?"*
 `;
 
 app.post('/api/chat', async (req, res) => {
     try {
-        const { mensagem } = req.body;
+        const { mensagem, historico } = req.body;
 
-        // Atualizado para a versão 2.5-flash, a versão atual e suportada pelo Google
+        // Inicializa o SDK do Gemini com instruções do sistema e ferramentas de busca
         const model = genAI.getGenerativeModel({
             model: "gemini-2.5-flash",
-            systemInstruction: systemPrompt
+            systemInstruction: systemPrompt,
+            tools: [{ googleSearch: {} }]
         });
 
-        const result = await model.generateContent(mensagem);
+        // Caso o histórico não seja fornecido ou esteja vazio, inicia com a mensagem atual
+        const contents = (historico && historico.length > 0) 
+            ? historico 
+            : [{ role: 'user', parts: [{ text: mensagem }] }];
+
+        const result = await model.generateContent({ contents });
         const resposta = result.response.text();
 
         res.json({ resposta });
