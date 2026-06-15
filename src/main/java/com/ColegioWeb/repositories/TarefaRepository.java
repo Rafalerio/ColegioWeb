@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
+    java.util.List<Tarefa> findByProfessorIdOrderByDataEntregaDesc(Long professorId);
 }

@@ -15,5 +15,11 @@ public record TarefaDTO(
         LocalDate dataEntrega,
 
         @NotNull(message = "A turma é obrigatória")
-        Long turmaId
+        Long turmaId,
+
+        @NotNull(message = "A disciplina é obrigatória")
+        Long disciplinaId,
+
+        @NotBlank(message = "O tipo é obrigatório")
+        String tipo
 ) {}

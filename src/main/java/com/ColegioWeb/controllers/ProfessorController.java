@@ -53,4 +53,52 @@ public class ProfessorController {
     public String situacaoAluno() {
         return "professor/situacao-aluno";
     }
+
+    @GetMapping("/faltas/resumo")
+    public ResponseEntity<java.util.List<com.ColegioWeb.dto.FaltaAgrupadaDTO>> getResumoFaltas(Authentication authentication) {
+        return ResponseEntity.ok(professorService.getResumoFaltas(getProfessorId(authentication)));
+    }
+
+    @GetMapping("/faltas/detalhes")
+    public ResponseEntity<java.util.List<com.ColegioWeb.dto.FaltaDetalheDTO>> getDetalhesFalta(
+            @RequestParam Long alunoId,
+            @RequestParam Long disciplinaId,
+            Authentication authentication) {
+        return ResponseEntity.ok(professorService.getDetalhesFalta(getProfessorId(authentication), alunoId, disciplinaId));
+    }
+
+    @DeleteMapping("/faltas/{id}")
+    public ResponseEntity<String> removerFalta(@PathVariable Long id, Authentication authentication) {
+        professorService.removerFalta(getProfessorId(authentication), id);
+        return ResponseEntity.ok("Falta removida com sucesso.");
+    }
+
+    @GetMapping("/turmas-disciplinas")
+    public ResponseEntity<java.util.List<com.ColegioWeb.dto.TurmaDisciplinaDTO>> getTurmasEDisciplinas(Authentication authentication) {
+        return ResponseEntity.ok(professorService.getTurmasEDisciplinas(getProfessorId(authentication)));
+    }
+
+    @GetMapping("/turmas/{turmaId}/alunos")
+    public ResponseEntity<java.util.List<com.ColegioWeb.dto.AlunoSimplificadoDTO>> getAlunosPorTurma(
+            @PathVariable Long turmaId,
+            Authentication authentication) {
+        return ResponseEntity.ok(professorService.getAlunosPorTurma(getProfessorId(authentication), turmaId));
+    }
+
+    @GetMapping("/tarefas/{tarefaId}/entregas")
+    public ResponseEntity<java.util.List<com.ColegioWeb.dto.EntregaTarefaDTO>> listarEntregas(
+            @PathVariable Long tarefaId,
+            Authentication authentication) {
+        return ResponseEntity.ok(professorService.listarEntregasPorTarefa(getProfessorId(authentication), tarefaId));
+    }
+
+    @PostMapping("/entregas/{entregaId}/avaliar")
+    public ResponseEntity<String> avaliarEntrega(
+            @PathVariable Long entregaId,
+            @RequestParam Double nota,
+            @RequestParam(required = false) String observacao,
+            Authentication authentication) {
+        professorService.avaliarEntrega(getProfessorId(authentication), entregaId, nota, observacao);
+        return ResponseEntity.ok("Avaliação registrada com sucesso.");
+    }
 }

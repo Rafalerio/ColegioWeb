@@ -8,7 +8,7 @@
             <img src="/images/user_logo.png">
             <div>
                 <p th:text="${#strings.toUpperCase(user.nome)}">NOME DO ALUNO</p>
-                <p th:text="${user.turma != null ? #strings.toUpperCase(user.turma.serie + ' ' + user.turma.nome) : (user.matricula != null ? 'MATRÍCULA: ' + user.matricula : 'SEM TURMA')}">3° ANO B</p>
+                <p th:text="${user.tipoUsuario == 'ALUNO' ? (user.turma != null ? #strings.toUpperCase(user.turma.serie + ' ' + user.turma.nome) : (user.matricula != null ? 'MATRÍCULA: ' + user.matricula : 'SEM TURMA')) : 'RESPONSÁVEL'}">3° ANO B</p>
             </div>
         </div>
     </header>

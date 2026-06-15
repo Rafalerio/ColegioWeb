@@ -74,56 +74,57 @@
             Nova Avaliação
         </button>
 
-        <div class="avaliacao">
+        <div th:each="t : ${tarefas}" class="avaliacao">
             <div>
-                <h3>Prova 1</h3>
-                <p>Matemática - 3º Ano B</p>
+                <h3 th:text="${t.titulo}">Prova 1</h3>
+                <p th:text="${t.disciplina.nome + ' - ' + t.turma.nome}">Matemática - 3º Ano B</p>
+                <p style="font-size: 0.8rem; color: #777;" th:text="${t.tipo}">PROVA</p>
             </div>
 
             <div>
-                <span>20/06/2026</span>
+                <span th:text="${#temporals.format(t.dataEntrega, 'dd/MM/yyyy')}">20/06/2026</span>
             </div>
 
             <div class="acoes">
-                <button onclick="abrirModalNotas()">Lançar Notas</button>
-                <button>Excluir</button>
+                <button th:onclick="'abrirModalNotas(' + ${t.id} + ')'">Lançar Notas</button>
             </div>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(tarefas)}">
+            <p style="color: #666; margin-top: 15px;">Nenhuma avaliação lançada ainda.</p>
         </div>
     </div>
 
     <div id="modalAvaliacao" class="modal">
-        <form class="avaliacao-form">
-            <input type="text" placeholder="Nome da Avaliação">
+        <form class="avaliacao-form" id="form-criar-avaliacao">
+            <input type="text" id="input-titulo" placeholder="Título da Avaliação" required>
+            <input type="text" id="input-descricao" placeholder="Descrição da Avaliação" required>
 
-            <select>
-                <option>Matemática</option>
+            <select id="select-tipo" required>
+                <option value="">Selecione o Tipo</option>
+                <option value="PROVA">Prova</option>
+                <option value="TRABALHO">Trabalho</option>
+                <option value="EXERCÍCIO">Exercício</option>
             </select>
 
-            <select>
-                <option>3° Ano B</option>
+            <select id="select-turma-disciplina" required>
+                <option value="">Selecione a Turma e Disciplina</option>
+                <option th:each="td : ${turmasEDisciplinas}" 
+                        th:value="${td.turmaId + '-' + td.disciplinaId}"
+                        th:data-turmaid="${td.turmaId}"
+                        th:data-disciplinaid="${td.disciplinaId}"
+                        th:text="${td.disciplinaNome + ' - ' + td.turmaNome}"></option>
             </select>
 
-            <input type="date">
+            <input type="date" id="input-data" required>
 
-            <input type="number" placeholder="Valor da prova">
-
-            <button type="submit">Criar Avaliação</button>
+            <button type="submit" id="btn-salvar-avaliacao">Criar Avaliação</button>
         </form>
     </div>
 
     <div id="modalNotas" class="modal">
-        <div class="lancar-notas">
-            <div class="aluno-nota">
-                <span>Carlinhos Horsen</span>
-                <input type="number" min="0" max="10" step="0.1">
-            </div>
-
-            <div class="aluno-nota">
-                <span>Dalva Nopanten</span>
-                <input type="number" min="0" max="10" step="0.1">
-            </div>
-
-            <button>Salvar Notas</button>
+        <div class="lancar-notas" id="container-entregas-notas">
+            <!-- Entregas serão listadas aqui -->
         </div>
     </div>
 

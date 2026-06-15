@@ -32,4 +32,11 @@ public class Tarefa {
     @ManyToOne
     @JoinColumn(name = "turma_id", nullable = false)
     private Turma turma;
+
+    @ManyToOne
+    @JoinColumn(name = "disciplina_id", nullable = false)
+    private Disciplina disciplina;
+
+    @Column(nullable = false)
+    private String tipo; // Ex: "PROVA", "TRABALHO", "EXERCICIO"
 }

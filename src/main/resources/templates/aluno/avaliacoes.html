@@ -71,23 +71,27 @@
 
     <div class="avaliacoes">
 
-        <div class="card-avaliacao">
+        <div th:each="e : ${entregas}" class="card-avaliacao">
             <div class="info">
-                <h2>Matemática</h2>
+                <h2 th:text="${e.disciplinaNome}">Matemática</h2>
 
                 <div class="dados">
-                    <span><i class="bx bxs-time"></i>40 min</span>
-                    <span><i class="bx bx-book-content"></i>10 questões</span>
-                    <span><i class="bx bx-calendar"></i>15/06/2026</span>
-                    <span><i class="bx bxs-calendar"></i>Professor(a) João</span>
+                    <span><i class="bx bx-book-content"></i><span th:text="${e.tituloTarefa}">Título</span></span>
+                    <span><i class="bx bx-calendar"></i><span th:text="${#temporals.format(e.dataLimite, 'dd/MM/yyyy')}">15/06/2026</span></span>
+                    <span th:if="${e.status == 'AVALIADO'}"><i class="bx bx-check-circle"></i>Nota: <strong th:text="${e.nota}">10</strong></span>
+                    <span th:if="${e.status == 'ENTREGUE'}"><i class="bx bx-time"></i>Aguardando nota</span>
+                    <span th:if="${e.status == 'PENDENTE'}"><i class="bx bx-error-circle"></i>Pendente</span>
                 </div>
 
                 <div class="botoes">
-                    <button class="btn-continuar">
-                        Continuar
+                    <button th:if="${e.status == 'PENDENTE'}" class="btn-continuar" th:onclick="'entregarAvaliacao(' + ${e.entregaId} + ')'">
+                        Marcar como Feito
+                    </button>
+                    <button th:if="${e.status != 'PENDENTE'}" class="btn-continuar" disabled style="background:#aaa; cursor:not-allowed;">
+                        Entregue
                     </button>
 
-                    <button class="btn-detalhes">
+                    <button class="btn-detalhes" th:onclick="'alert(\'' + ${e.descricaoTarefa} + '\')'">
                         Detalhes
                     </button>
                 </div>
@@ -95,45 +99,20 @@
 
             <div class="progresso">
                 <div class="circulo">
-                    <span>64%</span>
+                    <span th:text="${e.status == 'AVALIADO' ? e.nota : (e.status == 'ENTREGUE' ? '---' : '0%')}">64%</span>
                 </div>
             </div>
 
         </div>
 
-        <div class="card-avaliacao">
-            <div class="info">
-                <h2>Português</h2>
-
-                <div class="dados">
-                    <span><i class="bx bxs-time"></i>30 min</span>
-                    <span><i class="bx bx-book-content"></i>8 questões</span>
-                    <span><i class="bx bx-calendar"></i>18/06/2026</span>
-                    <span><i class="bx bxs-calendar"></i>Professor(a) Paula</span>
-                </div>
-
-                <div class="botoes">
-                    <button class="btn-continuar">
-                        Continuar
-                    </button>
-
-                    <button class="btn-detalhes">
-                        Detalhes
-                    </button>
-                </div>
-            </div>
-
-            <div class="progresso">
-                <div class="circulo">
-                    <span>80%</span>
-                </div>
-            </div>
-
+        <div th:if="${#lists.isEmpty(entregas)}">
+            <p style="color: #666; margin-top: 15px;">Nenhuma avaliação disponível.</p>
         </div>
 
     </div>
 </main>
 
 <script src="/js/sidebar.js"></script>
+<script src="/js/aluno-avaliacoes.js"></script>
 </body>
 </html>

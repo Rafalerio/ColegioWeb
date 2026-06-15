@@ -74,56 +74,58 @@
             Registrar Falta
         </button>
 
-        <div class="faltas-card">
-            <div>
-                <h3>Carlinhos Horsen</h3>
-                <p>Matemática - 3° Ano B</p>
+        <div id="lista-faltas-container">
+            <div th:each="f : ${resumoFaltas}" class="faltas-card">
+                <div>
+                    <h3 th:text="${f.alunoNome}">Nome do Aluno</h3>
+                    <p th:text="${f.disciplinaNome + ' - ' + f.turmaNome}">Disciplina - Turma</p>
+                </div>
+                <div>
+                    <span th:text="${f.quantidadeFaltas + ' Falta(s)'}">0 Falta(s)</span>
+                </div>
+                <div class="acoes">
+                    <button th:attr="onclick=|abrirModalDetalhesFalta(${f.alunoId}, '${f.alunoNome}', ${f.disciplinaId})|">
+                        Detalhes
+                    </button>
+                </div>
             </div>
-
-            <div>
-                <span>5 Faltas</span>
-            </div>
-
-            <div class="acoes">
-                <button onclick="abrirModalDetalhesFalta()">
-                    Detalhes
-                </button>
-            </div>
+            <p th:if="${#lists.isEmpty(resumoFaltas)}">Nenhuma falta registrada.</p>
         </div>
     </div>
 
     <div id="modalFalta" class="modal">
-        <form class="falta-form">
+        <form id="form-registrar-falta" class="falta-form">
             <h2>Registrar Falta</h2>
 
-            <select>
-                <option>3° Ano B</option>
+            <select id="select-turma-disciplina" required>
+                <option value="">Selecione a Turma e Disciplina</option>
+                <option th:each="t : ${turmasEDisciplinas}" 
+                        th:value="${t.turmaId + '-' + t.disciplinaId}"
+                        th:data-turmaid="${t.turmaId}"
+                        th:data-disciplinaid="${t.disciplinaId}"
+                        th:text="${t.disciplinaNome + ' - ' + t.turmaNome}"></option>
             </select>
 
-            <select>
-                <option>Dalva Nopanten</option>
+            <select id="select-aluno" required disabled>
+                <option value="">Selecione um Aluno</option>
             </select>
 
-            <input type="date">
+            <input type="date" id="input-data-falta" required>
 
-            <button type="submit">
+            <button type="submit" id="btn-salvar-falta">
                 Registrar Falta
             </button>
         </form>
     </div>
 
     <div id="modalDetalhesFalta" class="modal">
-        <div class="faltas-lista">
-            <h2>Carlinhos Horsen</h2>
-
-            <div class="faltas-registro">
-                <span>10/06/2026</span>
-                <button>Excluir</button>
+        <div class="faltas-lista" id="detalhes-faltas-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 id="titulo-detalhes-aluno" style="margin-bottom: 0;">Detalhes do Aluno</h2>
+                <button type="button" onclick="fecharModalDetalhesFalta()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #555;">&times;</button>
             </div>
-
-            <div class="faltas-registro">
-                <span>17/06/2026</span>
-                <button>Excluir</button>
+            <div id="lista-datas-faltas">
+                <!-- Registros dinâmicos -->
             </div>
         </div>
     </div>

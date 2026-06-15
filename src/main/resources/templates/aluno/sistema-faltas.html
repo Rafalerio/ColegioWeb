@@ -71,46 +71,29 @@
 
     <div class="sistema-faltas">
 
-        <div class="materia-faltas">
+        <div th:each="r : ${resumoFaltas}" class="materia-faltas">
 
             <div class="faltas-header">
-                <p>Matemática</p>
+                <p th:text="${r.disciplinaNome}">Matemática</p>
             </div>
 
             <div class="faltas-info">
 
                 <div>
                     <p class="faltas-label">Faltas</p>
-                    <p class="faltas-valor">3</p>
+                    <p class="faltas-valor" th:text="${r.faltas}">3</p>
                 </div>
 
                 <div>
                     <p class="faltas-label">Limite</p>
-                    <p class="faltas-valor">10</p>
+                    <p class="faltas-valor" th:text="${r.limite}">10</p>
                 </div>
 
             </div>
         </div>
-
-        <div class="materia-faltas">
-
-            <div class="faltas-header">
-                <p>Dança</p>
-            </div>
-
-            <div class="faltas-info">
-
-                <div>
-                    <p class="faltas-label">Faltas</p>
-                    <p class="faltas-valor">5</p>
-                </div>
-
-                <div>
-                    <p class="faltas-label">Limite</p>
-                    <p class="faltas-valor">12</p>
-                </div>
-
-            </div>
+        
+        <div th:if="${#lists.isEmpty(resumoFaltas)}">
+            <p style="margin-top: 15px; color: #515151;">Você ainda não possui disciplinas cadastradas ou limite de faltas disponível.</p>
         </div>
 
     </div>

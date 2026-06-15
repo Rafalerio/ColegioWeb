@@ -226,8 +226,17 @@ public class HomeController {
     @GetMapping("/aluno/calendario")
     public String alunoCalendario() { return "aluno/calendario"; }
 
+    @Autowired
+    private com.ColegioWeb.services.AlunoService alunoService;
+
     @GetMapping("/aluno/avaliacoes")
-    public String alunoAvaliacoes() { return "aluno/avaliacoes"; }
+    public String alunoAvaliacoes(Model model, org.springframework.security.core.Authentication authentication) {
+        Usuario usuario = usuarioRepository.findByCpf(authentication.getName()).orElse(null);
+        if (usuario != null && "ALUNO".equals(usuario.getTipoUsuario())) {
+            model.addAttribute("entregas", alunoService.listarEntregasDoAluno(usuario.getId()));
+        }
+        return "aluno/avaliacoes";
+    }
 
     @GetMapping("/aluno/disciplinas")
     public String alunoDisciplinas() { return "aluno/disciplinas"; }
@@ -258,14 +267,31 @@ public class HomeController {
     @GetMapping("/professor/calendario")
     public String professorCalendario() { return "professor/calendario"; }
 
+    @Autowired
+    private com.ColegioWeb.services.ProfessorService professorService;
+
     @GetMapping("/professor/avaliacoes")
-    public String professorAvaliacoes() { return "professor/avaliacoes"; }
+    public String professorAvaliacoes(Model model, org.springframework.security.core.Authentication authentication) {
+        Usuario usuario = usuarioRepository.findByCpf(authentication.getName()).orElse(null);
+        if (usuario != null && "PROFESSOR".equalsIgnoreCase(usuario.getTipoUsuario())) {
+            model.addAttribute("turmasEDisciplinas", professorService.getTurmasEDisciplinas(usuario.getId()));
+            model.addAttribute("tarefas", professorService.listarTarefas(usuario.getId()));
+        }
+        return "professor/avaliacoes";
+    }
 
     @GetMapping("/professor/disciplinas")
     public String professorDisciplinas() { return "professor/disciplinas"; }
 
     @GetMapping("/professor/sistema-faltas")
-    public String professorSistemaFaltas() { return "professor/sistema-faltas"; }
+    public String professorSistemaFaltas(Model model, org.springframework.security.core.Authentication authentication) {
+        Usuario usuario = usuarioRepository.findByCpf(authentication.getName()).orElse(null);
+        if (usuario != null && "PROFESSOR".equalsIgnoreCase(usuario.getTipoUsuario())) {
+            model.addAttribute("turmasEDisciplinas", professorService.getTurmasEDisciplinas(usuario.getId()));
+            model.addAttribute("resumoFaltas", professorService.getResumoFaltas(usuario.getId()));
+        }
+        return "professor/sistema-faltas";
+    }
 
     @GetMapping("/professor/situacao-aluno")
     public String professorSituacaoAluno() { return "professor/situacao-aluno"; }
