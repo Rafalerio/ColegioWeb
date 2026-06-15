@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
     mensagemInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            if (mensagemInput.value.trim() !== '') {
-                chatForm.dispatchEvent(new Event('submit'));
+            if (mensagemInput.value.trim() !== '' || fileInput.files.length > 0) {
+                chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
             }
         }
     });
