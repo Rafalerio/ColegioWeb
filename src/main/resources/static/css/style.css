@@ -192,6 +192,7 @@ footer {
     display: none;
     flex-direction: column;
     overflow: hidden;
+    z-index: 900;
 }
 
 .chat-header {
